@@ -1,6 +1,6 @@
 {
-  "name": "mopidyYeoman",
-  "version": "0.0.0",
+  "name": "mopidy-tribble",
+  "version": "0.0.1",
   "dependencies": {
     "angular": "~1.0.5",
     "json3": "~3.2.4",
