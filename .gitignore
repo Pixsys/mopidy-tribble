@@ -1,5 +1,5 @@
 bin
-client/vendor
+client/vendor/*
 !client/vendor/placeholders
 
 client/node_modules
