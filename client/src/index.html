@@ -12,13 +12,15 @@
     <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
 
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
     <!-- it's stupid to have to load it here, but this is for the +1 button -->
     <script type="text/javascript" src="https://apis.google.com/js/plusone.js">
       { "parsetags": "explicit" }
     </script>
   </head>
   <body>
-    <div class="container">
+    <!-- <div class="container">
     <h2>Tribble</h2>
       <ul class="nav">
         <li ui-route="/home" ng-class="{active:$uiRoute}">
@@ -27,15 +29,15 @@
             Dash
           </a>
         </li>
-        <li ui-route="/about" ng-class="{active:$uiRoute}">
-          <a href="#/about">
-            <i class="icon-info-sign"></i>
-            What is it?
+        <li ui-route="/status" ng-class="{active:$uiRoute}">
+          <a href="#/status">
+            <i class="icon-plus"></i>
+            Status
           </a>
         </li>
       </ul>
     </div>
-
+ -->
     <div class="container" ui-view="main"></div>
 
     <footer class="footer">

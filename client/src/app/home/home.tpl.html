@@ -1,8 +1,40 @@
-<h3>Now playing...</h3>
 
-<p>Ben Caplan - Down by the River</p>
+<div class="">
+	<div class="player-controls" class="btn-group" style="margin: 9px 0;">
+		<button ng-click="player.previousTrack()"  class="btn">
+			<i class="icon-fast-backward"></i>
+			<!-- Previous -->
+		</button>
+		<button ng-click="player.play()" class="btn">
+			<i class="icon-play"></i>
+			<!-- Play -->
+		</button>
+		<button ng-click="player.pause()" class="btn">
+			<i class="icon-pause"></i>
+			<!-- Pause -->
+		</button>
+		<button ng-click="player.nextTrack()" class="btn">
+			<i class="icon-fast-forward"></i>
+			<!-- Next -->
+		</button>
+	</div>
+
+	<div class="player-current">
+	Currently {{currentTrack}}
+	</div>
+
+	<div class="player-search">
+		<form ng-submit="searchFormWasSubmitted()" class="form-search">
+			<input type="text" name="search" ng-model="searchTerm" placeholder="search..." class="input-medium search-query">
+			{{searchTerm}}
+		</form>
+	</div>
+
+</div>
 
 
+<a href="javascript:void(0);" ng-click="player.online()">Online</a>
+<a href="javascript:void(0);" ng-click="player.printTrack()">Print Track</a>
+<a href="javascript:void(0);" ng-click="player.playbackStarted()">Playback Started</a>
 
-<player class="player">
-</player>
+<a href="javascript:void(0);" ng-click="player.library.search()">Search</a>

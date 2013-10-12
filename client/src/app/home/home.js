@@ -41,13 +41,23 @@ angular.module( 'ngBoilerplate.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope, comms, player ) {
+.controller( 'HomeCtrl', function HomeController( $scope, comms, player) {
 
-  
-  comms.test();
-  player.test();
+  // expose player functions to the view
+  $scope.player = player;
 
-  console.log('Fun times');
+  // get current playing track
+  $scope.currentTrack = 'Ben Capistrano - Down to the Fluid Stream';
+
+  /**
+   * handles submission of a user search for artists.
+   * @return {[type]} [description]
+   */
+  $scope.searchFormWasSubmitted = function() {
+
+    console.log('Searched for: ' + $scope.searchTerm);
+
+  };
 
 })
 

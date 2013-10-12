@@ -1,15 +1,15 @@
-// directive that allows us to place a control for playing music
-// eg. <player size="large" />
+angular.module('directives.player', []).directive('player', [
+	'$parse', function($parse) {
+		return {
+			restrict: 'ECA',
+			templateUrl: 'directives/player/player.tpl.html',
 
-angular.module('directives.player', [])
+			link: function(scope, elm, attrs) {
 
-.directive('player', ['$parse', function($parse) {
+			function open() {
+				
+			}
 
-
-  return {
-    restrict: 'AE',
-    templateUrl: 'directives/player/player.tpl.html'
-  };
-
-
+		}
+	};
 }]);
