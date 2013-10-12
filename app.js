@@ -73,6 +73,25 @@ io.sockets.on('connection', function(socket) {
 	socket.on('jukebox:previousTrack', $controller.jukebox.previousTrack);
 	socket.on('jukebox:nextTrack', $controller.jukebox.nextTrack);
 
+	socket.on('jukebox:library:search', function (request, response) {
+				
+		$controller.jukebox.library.search(request, function(err, results) {
+			
+			if (!err) {
+
+				response(null, results);
+				
+			} else {
+
+				response(err);
+
+			}
+			
+
+		});
+
+	});
+
 })
 
 /**

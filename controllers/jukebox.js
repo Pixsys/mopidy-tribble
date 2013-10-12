@@ -45,12 +45,37 @@ var jukebox = {
 	},
 	'library' : {
 
+		/*
+		 * (Fuzzy) Search all sources
+		 *
+		 # Returns results matching 'a' in any backend
+		 * search({'any': ['a']})
+		 * search(any=['a'])
+
+		 # Returns results matching artist 'xyz' in any backend
+		 * search({'artist': ['xyz']})
+		 * search(artist=['xyz'])
+
+		 # Returns results matching 'a' and 'b' and artist 'xyz' in any
+		 # backend
+		 * search({'any': ['a', 'b'], 'artist': ['xyz']})
+		 * search(any=['a', 'b'], artist=['xyz'])
+
+		 # Returns results matching 'a' if within the given URI roots
+		 # "file:///media/music" and "spotify:"
+		 * search({'any': ['a']}, uris=['file:///media/music', 'spotify:'])
+		 * search(any=['a'], uris=['file:///media/music', 'spotify:'])
+		 */
 		search : function(params, callback) {
 
-			mopidy.library.search(params).then(function(data) {
-				console.log(data);
-			},
-				console.error.bind(console)
+			console.log('search called');
+
+			mopidy.library.search(params).then(
+				function(data) {
+					console.log('search complete');
+					callback(null, data);
+				},
+				console.error
 			);
 
 		}
