@@ -67,10 +67,10 @@ io.sockets.on('connection', function(socket) {
 
 	console.log('connection on socket!');
 
-	socket.on('jukebox:play', $controller.jukebox.play);
-	socket.on('jukebox:pause', $controller.jukebox.pause);
-	socket.on('jukebox:previousTrack', $controller.jukebox.previousTrack);
-	socket.on('jukebox:nextTrack', $controller.jukebox.nextTrack);
+	socket.on('jukebox:play', $controller.jukebox.play.bind($controller.jukebox));
+	socket.on('jukebox:pause', $controller.jukebox.pause.bind($controller.jukebox));
+	socket.on('jukebox:previousTrack', $controller.jukebox.previousTrack.bind($controller.jukebox));
+	socket.on('jukebox:nextTrack', $controller.jukebox.nextTrack.bind($controller.jukebox));
 
 	socket.on('jukebox:library:search', function (request, response) {
 				
