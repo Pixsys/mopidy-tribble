@@ -61,7 +61,6 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 /**
  * SocketIO for Web Interface (jukebox relay)
  */
-
 io = io.listen(server);
 
 io.sockets.on('connection', function(socket) {
@@ -92,7 +91,17 @@ io.sockets.on('connection', function(socket) {
 
 	});
 
+});
+
+/**
+ * SocketIO for Web Interface (jukebox relay)
+ */
+$controller.jukebox.on('playback:started', function(track) {
+
+	io.sockets.emit('playback:started', track);
+
 })
+
 
 /**
  * KeyPress (temporary library)
@@ -102,7 +111,7 @@ process.stdin.setRawMode(true);
 process.stdin.resume();
 
 process.stdin.on('keypress', function (ch, key) {
-	console.log('got "keypress"', key);
+	// console.log('got "keypress"', key);
 	if (key && key.ctrl && key.name == 'c') {
 		process.exit();
 	} else {

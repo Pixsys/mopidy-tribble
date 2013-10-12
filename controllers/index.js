@@ -1,5 +1,5 @@
 // Import other controllers
-exports.jukebox = require('./jukebox').jukebox;
+exports.jukebox = require('./jukebox');
 exports.comms = require('./comms');
 
 // console.log('comms module loaded');

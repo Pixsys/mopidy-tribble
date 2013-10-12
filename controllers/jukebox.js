@@ -2,48 +2,66 @@
  * Controller dependancies
  */
 var Mopidy = require('mopidy').Mopidy;
+var events = require('events');
 
-var mopidy = new Mopidy({
-	webSocketUrl: "ws://localhost:6680/mopidy/ws/"
-});
+/**
+ * Exports the module.
+ */
+exports = module.exports = new jukebox;
+
+/**
+ * Jukebox constructor.
+ */
+function jukebox(options) {
+	"use strict";
+	
+	this.mopidy = new Mopidy({
+		webSocketUrl: "ws://localhost:6680/mopidy/ws/"
+	});
 
 
-var jukebox = {
+	events.EventEmitter.call(this);
 
-	online : function() {
+	this.online = function() {
 
-		console.log('Mopdiy Online');
+		console.log('Mopidy Online');
 
-		mopidy.playback.getCurrentTrack().then(jukebox.printTrack, console.error.bind(console));
+		this.mopidy.playback.getCurrentTrack().then(jukebox.printTrack, console.error.bind(console));
 
 	},
-	printTrack : function (track) {
+	this.printTrack = function (track) {
 		
 		if (track) {
-			console.log("Currently playing:", track.name, "by",
-			track.artists[0].name, "from", track.album.name);
+			console.log("Currently playing:", track.name, "by",	track.artists[0].name, "from", track.album.name);
 		} else {
 			console.log("No current track");
 		}
 		
 	},
-	playbackStarted : function (track) {
+	this.playbackStarted = function (track) {
 		// console.log(track);
-		jukebox.printTrack(track.tl_track.track);
+		this.printTrack(track.tl_track.track);
+
+		this.emit('playback:started', {
+			'name'	: track.tl_track.track.name,
+			'artist': track.tl_track.track.artists[0].name,
+			'album'	: track.tl_track.track.album.name,
+		});
+		
 	},
-	nextTrack : function () {
-		mopidy.playback.next();
+	this.nextTrack = function () {
+		this.mopidy.playback.next();
 	},
-	previousTrack : function() {
-		mopidy.playback.previous();
+	this.previousTrack = function() {
+		this.mopidy.playback.previous();
 	},
-	pause : function() {
-		mopidy.playback.pause();
+	this.pause = function() {
+		this.mopidy.playback.pause();
 	},
-	play : function() {
-		mopidy.playback.play();
+	this.play = function() {
+		this.mopidy.playback.play();
 	},
-	'library' : {
+	this.library = {
 
 		/*
 		 * (Fuzzy) Search all sources
@@ -80,11 +98,11 @@ var jukebox = {
 
 		}
 	}
-};
 
-exports.jukebox = jukebox;
+	this.mopidy.on('state:online', this.online.bind(this));
+	this.mopidy.on('event:trackPlaybackStarted', this.playbackStarted.bind(this));
 
-// mopidy.on(console.log.bind(console));
-mopidy.on('state:online', jukebox.online);
-mopidy.on('event:trackPlaybackStarted', jukebox.playbackStarted);
+}
 
+// Add events functions to our constructor
+jukebox.prototype.__proto__ = events.EventEmitter.prototype;
