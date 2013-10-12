@@ -7,6 +7,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var keypress = require('keypress');
+var socket = require('socket.io')
 
 /**
  * Controller.
@@ -54,10 +55,25 @@ if ('development' == app.get('env')) {
 /**
  * HTTP server
  */
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });
 
+/**
+ * SocketIO for Web Interface (jukebox relay)
+ */
+// socket.listen(server);
+
+// socket.on('connection', function(socket) {
+
+// 	console.log('connection on socket!');
+
+// 	socket.on('jukebox:play', $controller.jukebox.play);
+// 	socket.on('jukebox:pause', $controller.jukebox.pause);
+// 	socket.on('jukebox:previousTrack', $controller.jukebox.previousTrack);
+// 	socket.on('jukebox:nextTrack', $controller.jukebox.nextTrack);
+
+// })
 
 /**
  * KeyPress (temporary library)
