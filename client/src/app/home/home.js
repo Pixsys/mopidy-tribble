@@ -47,6 +47,8 @@ angular.module( 'ngBoilerplate.home', [
   comms.test();
   player.test();
 
+  console.log('Fun times');
+
 })
 
 ;
