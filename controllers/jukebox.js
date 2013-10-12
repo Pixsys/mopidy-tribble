@@ -16,20 +16,16 @@ var jukebox = {
 
 		mopidy.playback.getCurrentTrack().then(jukebox.printTrack, console.error.bind(console));
 
-		mopidy.library.search({'any': ['incubus']}).then(function(data) {
-			console.log(data);
-		},
-			console.error.bind(console)
-		);
-
 	},
 	printTrack : function (track) {
+		
 		if (track) {
 			console.log("Currently playing:", track.name, "by",
-				track.artists[0].name, "from", track.album.name);
+			track.artists[0].name, "from", track.album.name);
 		} else {
 			console.log("No current track");
 		}
+		
 	},
 	playbackStarted : function (track) {
 		// console.log(track);
@@ -46,6 +42,18 @@ var jukebox = {
 	},
 	play : function() {
 		mopidy.playback.play();
+	},
+	'library' : {
+
+		search : function(params, callback) {
+
+			mopidy.library.search(params).then(function(data) {
+				console.log(data);
+			},
+				console.error.bind(console)
+			);
+
+		}
 	}
 };
 
