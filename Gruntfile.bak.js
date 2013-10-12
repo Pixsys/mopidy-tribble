@@ -74,7 +74,7 @@ module.exports = function ( grunt ) {
         commitMessage: 'chore(release): v%VERSION%',
         commitFiles: [
           "package.json", 
-          "bower.json"
+          "client/bower.json"
         ],
         createTag: false,
         tagName: 'v%VERSION%',
@@ -103,7 +103,7 @@ module.exports = function ( grunt ) {
           { 
             src: [ '**' ],
             dest: '<%= build_dir %>/assets/',
-            cwd: 'client/src/assets',
+            cwd: 'src/assets',
             expand: true
           }
        ]   
@@ -327,7 +327,7 @@ module.exports = function ( grunt ) {
        */
       app: {
         options: {
-          base: 'client/src/app'
+          base: 'src/app'
         },
         src: [ '<%= app_files.atpl %>' ],
         dest: '<%= build_dir %>/templates-app.js'
@@ -338,7 +338,7 @@ module.exports = function ( grunt ) {
        */
       common: {
         options: {
-          base: 'client/src/common'
+          base: 'src/common'
         },
         src: [ '<%= app_files.ctpl %>' ],
         dest: '<%= build_dir %>/templates-common.js'
@@ -478,7 +478,7 @@ module.exports = function ( grunt ) {
        */
       assets: {
         files: [ 
-          'client/src/assets/**/*'
+          'src/assets/**/*'
         ],
         tasks: [ 'copy:build_assets' ]
       },
@@ -506,7 +506,7 @@ module.exports = function ( grunt ) {
        * When the CSS files change, we need to compile and minify them.
        */
       less: {
-        files: [ 'client/src/**/*.less' ],
+        files: [ 'src/**/*.less' ],
         tasks: [ 'recess:build' ]
       },
 
@@ -609,7 +609,7 @@ module.exports = function ( grunt ) {
       return file.replace( dirRE, '' );
     });
 
-    grunt.file.copy('client/src/index.html', this.data.dir + '/index.html', { 
+    grunt.file.copy('src/index.html', this.data.dir + '/index.html', { 
       process: function ( contents, path ) {
         return grunt.template.process( contents, {
           data: {
@@ -630,7 +630,7 @@ module.exports = function ( grunt ) {
   grunt.registerMultiTask( 'karmaconfig', 'Process karma config templates', function () {
     var jsFiles = filterForJS( this.filesSrc );
     
-    grunt.file.copy( 'client/karma/karma-unit.tpl.js', grunt.config( 'build_dir' ) + '/karma-unit.js', { 
+    grunt.file.copy( 'karma/karma-unit.tpl.js', grunt.config( 'build_dir' ) + '/karma-unit.js', { 
       process: function ( contents, path ) {
         return grunt.template.process( contents, {
           data: {

@@ -1,3 +1,9 @@
+bin
+client/vendor
+!client/vendor/placeholders
+
+client/node_modules
+
 node_modules
 dist
 .tmp
@@ -5,3 +11,4 @@ dist
 app/components
 public/*
 ._.DS_Store
+.DS_Store

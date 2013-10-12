@@ -1,7 +1,18 @@
 {
+  "author": "Pixsys",
   "name": "mopidy-tribble",
   "version": "0.0.1",
+  "homepage": "http://pixsys.co.uk",
   "private": true,
+  "licenses": {
+    "type": "MIT",
+    "url": "https://raw.github.com/pixsys/mopidy-tribble/master/LICENSE"
+  },
+  "bugs": "https://github.com/pixsys/mopidy-tribble/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pixsys/mopidy-tribble.git"
+  },
   "scripts": {
     "start": "node app.js"
   },
@@ -10,7 +21,8 @@
     "jade": "*",
     "less-middleware": "*",
     "mopidy": "~0.1.1",
-    "keypress": "~0.2.1"
+    "keypress": "~0.2.1",
+    "grunt-conventional-changelog": "~1.0.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -30,7 +42,7 @@
     "grunt-usemin": "~0.1.10",
     "grunt-regarde": "~0.1.1",
     "grunt-rev": "~0.1.0",
-    "grunt-karma": "~0.3.0",
+    "grunt-karma": "~0.5.0",
     "grunt-open": "~0.2.0",
     "matchdep": "~0.1.1",
     "grunt-google-cdn": "~0.1.1",
