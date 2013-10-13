@@ -139,6 +139,7 @@ process.stdin.resume();
 process.stdin.on('keypress', function (ch, key) {
 	// console.log('got "keypress"', key);
 	if (key && key.ctrl && key.name == 'c') {
+		$controller.jukebox.disconnect();
 		process.exit();
 	} else {
 		// console.log(key);

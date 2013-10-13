@@ -235,6 +235,22 @@ function jukebox(options) {
 		}
 	}
 
+	this.disconnect = function() {
+
+		// Close the WebSocket without reconnecting. Letting the object be garbage
+		// collected will have the same effect, so this isn't strictly necessary.
+		this.mopidy.close();
+
+		// Unregister all event listeners. If you don't do this, you may have
+		// lingering references to the object causing the garbage collector to not
+		// clean up after it.
+		this.mopidy.off();
+
+		// Delete your reference to the object, so it can be garbage collected.
+		this.mopidy = null;
+
+	}
+
 	this.mopidy.on('state:online', this.online.bind(this));
 	this.mopidy.on('event:trackPlaybackStarted', this.playbackStarted.bind(this));
 	this.mopidy.on('event:trackPlaybackEnded', this.playbackEnded.bind(this));
