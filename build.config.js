@@ -76,6 +76,7 @@ module.exports = {
     ],
     css: [
       'client/vendor/jquery-ui/themes/base/jquery-ui.css',
+      'client/vendor/lesshat/lesshat.less'
       // 'client/vendor/jquery-ui/themes/base/jquery.ui.selectable.css'
     ],
     assets: [

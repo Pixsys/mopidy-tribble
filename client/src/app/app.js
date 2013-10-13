@@ -16,12 +16,18 @@ var app = angular.module( 'ngBoilerplate', [
 .run( function run () {
 })
 
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
+.controller( 'AppCtrl', function AppCtrl ( $rootScope, $scope, $location ) {
+
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
     if ( angular.isDefined( toState.data.pageTitle ) ) {
-      $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate' ;
+      $scope.pageTitle = toState.data.pageTitle + ' | Tribble';
     }
   });
+
+  $scope.$on('playback:queue', function(event, data) {
+    $scope.pageTitle = '('+data.length + ') Tribble';
+  });
+
 })
 
 ;

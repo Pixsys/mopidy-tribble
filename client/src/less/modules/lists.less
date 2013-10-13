@@ -15,10 +15,27 @@
 
 .list-track__li {
 	padding: 0.25em 0;
+	overflow: auto;
 }
 
-.list-track__li--queue {
-	
+.list-track__small {
+	color: #aaaaaa;
+}
+.list-track__img {
+	float: left;
+	width: 50px;
+	height: 50px;
+	vertical-align: top;
+	margin-top: 7px;
+}
+
+.list-track__details {
+	float: left;
+	margin: 0 0 0 10px;
+	box-sizing: border-box;
+}
+.list-track__details--play-queue {
+	width: calc(100% - 50px);
 }
 
 .list-album {
@@ -27,4 +44,10 @@
 
 .list-album__li {
 	padding: 0.25em 0;
+}
+
+.play-queue {
+	box-sixing: border-box;
+	padding: 10px;
+	background: white;
 }

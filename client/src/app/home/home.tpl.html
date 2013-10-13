@@ -1,84 +1,100 @@
+ <div class="header">
+  <div class="header-inner">
 
-<div class="header row">
+    <div class="player-controls" class="btn-group">
+      <button ng-click="player.previousTrack()"  class="btn player-controls__button">
+        <i class="icon-fast-backward"></i>
+        <!-- Previous -->
+      </button>
+      <button ng-click="player.play()" class="btn player-controls__button">
+        <i class="icon-play"></i>
+        <!-- Play -->
+      </button>
+      <button ng-click="player.pause()" class="btn player-controls__button">
+        <i class="icon-pause"></i>
+        <!-- Pause -->
+      </button>
+      <button ng-click="player.nextTrack()" class="btn player-controls__button">
+        <i class="icon-fast-forward"></i>
+        <!-- Next -->
+      </button>
+    </div>
 
-	<div class="player-controls span3" class="btn-group" style="margin: 9px 0;">
-		<button ng-click="player.previousTrack()"  class="btn">
-			<i class="icon-fast-backward"></i>
-			<!-- Previous -->
-		</button>
-		<button ng-click="player.play()" class="btn">
-			<i class="icon-play"></i>
-			<!-- Play -->
-		</button>
-		<button ng-click="player.pause()" class="btn">
-			<i class="icon-pause"></i>
-			<!-- Pause -->
-		</button>
-		<button ng-click="player.nextTrack()" class="btn">
-			<i class="icon-fast-forward"></i>
-			<!-- Next -->
-		</button>
-	</div>
+    <!-- currently playing -->
+    <div class="player-current">
+	    <img src="{{currentTrack.artwork}}" class="list-track__img" />
+	    <div class="list-track__details">
+		    <strong>{{currentTrack.name}}</strong><br />
+		    {{currentTrack.artist}}<br />
+		    <small class="list-track__small">
+		    {{currentTrack.album}}</small>
+		</div>
+    </div>
 
-	<!-- currently playing -->
-	<div class="player-current span4">
-	<strong>{{currentTrack.name}}</strong><br />
-	{{currentTrack.artist}}<br />
-	{{currentTrack.album}}
-	</div>
-
-	<!-- search form -->
-	<div class="player-search span4">
-		<form ng-submit="search.any(searchTerm)" class="form form-search">
-			<input type="text" name="search" ng-model="searchTerm" placeholder="search..." class="input-medium search-query">
-		</form>
-	</div>
-
+    <!-- search form -->
+    <div class="player-search">
+      <form ng-submit="search.any(searchTerm)" class="form form-search">
+        <input type="text" name="search" ng-model="searchTerm" placeholder="search..." class="input-medium search-query player-search__input">
+      </form>
+    </div>
+  </div>
 </div>
 
-<!-- play queueue -->
-<h3>Queue</h3>
-<ul ng-model="playbackQueue" class="list-track">
-	<li ng-repeat="track in playbackQueue" class="list-track__li--queue">
-		<a href="" ng-click="player.play(track)">
-		<i class="icon-play"></i></a>
-		{{track.name}} - {{track.artist}} {{track.album}}
-	</li>
-</ul>
-
-<!-- search results -->
 <div class="row">
-	<div class="span4">
-		<h3>Artists <small>{{searchResult.artists.length}}</small></h3>
-		<ul ui-sortable ng-model="searchResult.artists" class="list-artist selectableow ">
-		  <li ng-repeat="artist in searchResult.artists" class="list-artist__li">
-		  	<a href="" ng-click="search.filterByArtist(artist.name)">{{ artist.name }}</a>
-		  </li>
-		</ul>
-	</div>
+	<div class="span9">
+		<h3>Search <small>{{searchTerm}}</small></h3>
+		<div class="row">
+			<!-- search results -->
+			<div class="span3">
+				<h4>Artists <small>{{searchResult.artists.length}}</small></h4>
+				<ul ui-sortable ng-model="searchResult.artists" class="list-artist selectableow ">
+				  <li ng-repeat="artist in searchResult.artists" class="list-artist__li">
+				  	<a href="" ng-click="search.filterByArtist(artist.name)">{{ artist.name }}</a>
+				  </li>
+				</ul>
+			</div>
 
-	<div class="span4">
-		<h3>Albums <small>{{searchResult.albums.length}}</small></h3>
-		<ul ui-sortable ng-model="searchResult.albums" class="list-album">
-		  <li ng-repeat="album in searchResult.albums | artistfilter" ng-animate="'animate'" class="list-album__li">
-		  	<a href="" ng-click="search.filterByAlbum(album.name)">{{ album.name }}</a><br />{{ album.artists[0].name }}
-		  </li>
-		</ul>
-	</div>
+			<div class="span3">
+				<h4>Albums <small>{{searchResult.albums.length}}</small></h4>
+				<ul ui-sortable ng-model="searchResult.albums" class="list-album">
+				  <li ng-repeat="album in searchResult.albums | artistfilter" ng-animate="'animate'" class="list-album__li">
+				  	<a href="" ng-click="search.filterByAlbum(album.name)">{{ album.name }}</a><br />{{ album.artists[0].name }}
+				  </li>
+				</ul>
+			</div>
 
-	<div class="span4">
-		<h3>Tracks <small>{{searchResult.tracks.length}}</small></h3>
-		<ul ui-jq="sortable" ng-model="searchResult.tracks" class="list-track">
-		  <li ng-repeat="track in searchResult.tracks | artistfilter | albumfilter" class="list-track__li">
-		  	<a href="" ng-click="player.play(track)">{{ track.name }}</a>
-		  	<br />{{ track.artists[0].name }} &nbsp;&nbsp;
-		  	<a href="" ng-click="search.filterByAlbum(track.album.name)">
-			  	<small style="color: #aaaaaa;">
-			  		{{track.album.name}} 
-			  	</small>
-		  	</a>
-		  	<a href="" ng-click="player.addTrack(track)" class="btn">Add</a>
-		  </li>
+			<div class="span3">
+				<h4>Tracks <small>{{searchResult.tracks.length}}</small></h4>
+				<ul ui-jq="sortable" ng-model="searchResult.tracks" class="list-track">
+				  <li ng-repeat="track in searchResult.tracks | artistfilter | albumfilter" class="list-track__li">
+				  	<!-- <a href="" ng-click="player.addTrack(track)" class="btn">Add</a> -->
+				  	<a href="" ng-click="player.addTrack(track)">{{ track.name }}</a>
+				  	<br />{{ track.artists[0].name }} &nbsp;&nbsp;
+				  	<a href="" ng-click="search.filterByAlbum(track.album.name)">
+					  	<small style="color: #aaaaaa;">
+					  		{{track.album.name}} 
+					  	</small>
+				  	</a>
+
+				  </li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- play queueue -->
+	<div class="span3" class="play-queue">
+		<h3>Queue <small>{{playbackQueue.length}} tracks</small></h3>
+		<ul ng-model="playbackQueue" class="list-track">
+			<li ng-repeat="track in playbackQueue" class="list-track__li list-track__li--queue">
+				<img src="{{track.artwork}}" class="list-track__img" />
+				<div class="list-track__details list-track__details--play-queue">
+					<strong>{{track.name}}</strong><br />
+					{{track.artist}} 
+					<small class="list-track__small">
+				  		{{track.album}} 
+				  	</small>
+				</div>
+			</li>
 		</ul>
 	</div>
 </div>

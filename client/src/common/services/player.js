@@ -6,6 +6,7 @@ angular.module('services.player').factory('player', ['$rootScope', '$location', 
 
 	function playbackQueueWasUpdated(queue) {
 		console.log('PLAYBACK QUEUE');
+		console.log(queue);
 		$rootScope.$broadcast('playback:queue', queue);
 	}
 
