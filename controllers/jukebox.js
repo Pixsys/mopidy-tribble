@@ -70,6 +70,7 @@ function jukebox(options) {
 			'artist': track.tl_track.track.artists[0].name,
 			'album'	: track.tl_track.track.album.name,
 			'uri'	: track.tl_track.track.uri,
+			'length': track.tl_track.track.length,
 		
 		};
 
