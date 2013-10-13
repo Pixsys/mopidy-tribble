@@ -18,8 +18,8 @@ function jukebox(options) {
 	var self = this;
 
 	this.mopidy = new Mopidy({
-		webSocketUrl: "ws://192.168.0.17:6680/mopidy/ws/"
-		// webSocketUrl: "ws://localhost:6680/mopidy/ws/"
+		// webSocketUrl: "ws://192.168.0.6:6680/mopidy/ws/"
+		webSocketUrl: "ws://localhost:6680/mopidy/ws/"
 	});
 
 	this.status = {
@@ -41,6 +41,12 @@ function jukebox(options) {
 
 	};
 
+	this.nowPlaying = function() {
+
+		return this.status.now_playing;
+
+	}
+
 	this.printTrack = function (track) {
 		
 		if (track) {
@@ -56,7 +62,7 @@ function jukebox(options) {
 	};
 
 	this.playbackStarted = function (track) {
-		console.log('playback started');
+
 		var pretty_track = {
 
 			'name'	: track.tl_track.track.name,
@@ -66,15 +72,31 @@ function jukebox(options) {
 		
 		};
 
-		console.log(pretty_track);
-
 		this.status.now_playing = pretty_track;
 
 		this.emit('playback:started', pretty_track);
 
 	};
 
-	
+	this.playbackEnded = function (track) {
+
+		if(this.queue[0]) {
+
+			var to_be_played = this.queue.shift();
+			
+			this.library.playUri(to_be_played.uri);
+
+			this.emit('playback:queue');
+
+		} else {
+
+			this.status.now_playing = null;
+
+			this.emit('playback:stopped');
+
+		}
+
+	};
 
 	this.nextTrack = function () {
 
@@ -92,13 +114,39 @@ function jukebox(options) {
 
 		this.mopidy.playback.pause().then(null, console.error.bind(console));
 
+		this.emit('playback:paused');
+
 	};
 
 	this.play = function(track) {
 
-		this.mopidy.playback.play(track).then(console.error.bind(console), console.error.bind(console));
+		this.mopidy.playback.play(track).then(null, console.error.bind(console));
 
 	};
+
+	this.addTrack = function(track) {
+
+		console.log('[JUKE] addTrack()');
+
+		if(this.status.now_playing) {
+
+			console.log('[JUKE] '+ track.uri +' added to the queue');
+
+			this.queue.push(track);
+
+			this.emit('playback:queue');
+
+		} else {
+
+			console.log('[JUKE] '+ track.uri +' sent to be played');
+
+			this.library.playUri(track.uri);
+
+			this.emit('playback:queue');
+		
+		};
+
+	}
 
 	this.library = {
 
@@ -116,12 +164,10 @@ function jukebox(options) {
 		 */
 		search : function(params, callback) {
 
-			console.log('search called');
+			console.log('[JUKE] search()');
 
 			self.mopidy.library.search(params).then(
 				function(data) {
-
-					console.log('search complete');
 
 					callback(null, data);
 
@@ -135,30 +181,27 @@ function jukebox(options) {
 
 		playUri : function(uri) {
 
-			console.log('playUri');
+			console.log('[JUKE] playUri()');
 
 			self.mopidy.library.lookup(uri).then(function(track) {
 					
-				console.log(track);
-
-				// console.log(self.mopidy);
-
 				self.mopidy.tracklist.clear();
 
 				self.mopidy.tracklist.add(track);
 			
 				self.play();
 			
-			}, console.error.bind(console));
+			});
 			
 		}
 	}
 
 	this.mopidy.on('state:online', this.online.bind(this));
 	this.mopidy.on('event:trackPlaybackStarted', this.playbackStarted.bind(this));
+	this.mopidy.on('event:trackPlaybackEnded', this.playbackEnded.bind(this));
 
 	// Dev - echo all events
-	this.mopidy.on(console.log.bind(console));
+	// this.mopidy.on(console.log.bind(console));
 
 }
 
