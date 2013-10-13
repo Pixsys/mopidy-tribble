@@ -15,10 +15,15 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 	};
 
 	var blackList  = [
-		'taylor swift', 'miley cyrus', 'glee',
-		'justin bieber', 'rebecca black', 'rihanna',
-		'britney spears', 'justin timberlake'
+		'taylor', 'swift', 'taylor swift',
+		'miley', 'cyrus', 'miley cyrus',
+		'glee',
+		'justin beiber', 'rebecca black', 'rihanna',
+		'britney spears', 'justin timberlake',
+		'christina aguilera', 'spice girls', 'take that',
+		'boyzone', 'westlife'
 	];
+
 
 	function stringIsInBlackList(string) {
 
@@ -110,6 +115,15 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 
 	search.getFilters = function() {
 		return searchFilters;
+	};
+
+	search.clearSearch = function() {
+		// reset search
+		searchResult = {
+			albums: [],
+			artists: [],
+			tracks: []
+		};
 	};
 
 	return search;

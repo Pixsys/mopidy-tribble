@@ -24,24 +24,26 @@
     <div class="player-current">
 	    <img src="{{currentTrack.artwork}}" class="list-track__img" />
 	    <div class="list-track__details list-track__details--current-track">
-		    <span class="list-track__track-name">{{currentTrack.name}}</span><br />
+		    <span class="list-track__track-name">{{currentTrack.name}}</span>
+		    <small>{{currentTrack.length | date:'mm:ss' }}</small><br />
 		    {{currentTrack.artist}}<br />
 		    <small class="list-track__small">
 		    {{currentTrack.album}}</small>
+
 		</div>
     </div>
 
     <!-- search form -->
     <div class="player-search">
       <form ng-submit="search.any(searchTerm)" class="form form-search">
-        <input type="text" name="search" ng-model="searchTerm" placeholder="search..." class="input-medium search-query player-search__input">
+        <input ui-keypress="{13:'keypressCallback($event)'}" type="text" name="search" ng-model="searchTerm" placeholder="search..." class="input-medium search-query player-search__input">
       </form>
     </div>
   </div>
 </div>
 
 <div class="row">
-	<div class="span8">
+	<div class="span8" ng-animate=" 'animation' " ng-show="searchTerm">
 		<h3>Search <small>{{searchTerm}}</small></h3>
 		<div class="row">
 			<!-- search results -->
@@ -82,17 +84,20 @@
 		</div>
 	</div>
 	<!-- play queueue -->
-	<div class="span4 play-queue">
+	<div class="play-queue" ng-class="{'fullscreen': !searchTerm, 'span4': searchTerm}">
 		<h3>Queue <small>{{playbackQueue.length}} tracks</small></h3>
 		<ul ng-model="playbackQueue" class="list-track">
 			<li ng-repeat="track in playbackQueue" class="list-track__li list-track__li--queue">
 				<img src="{{track.artwork}}" class="list-track__img" />
 				<div class="list-track__details list-track__details--play-queue">
-					<span class="list-track__track-name">{{track.name}}</span><br />
-					{{track.artist}}<br />
+					<span class="list-track__track-name">{{track.name}}</span>
+					<span class="list-track__track-artist">{{track.artist}}</span>
+					<span class="list-track__track-length"><small>{{track.length | date:'mm:ss' }}</small></span>
 					<small class="list-track__small">
 				  		{{track.album}} 
 				  	</small>
+
+				  	
 				</div>
 			</li>
 		</ul>
