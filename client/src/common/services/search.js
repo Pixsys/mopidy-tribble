@@ -72,12 +72,18 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 
 	search.filterByArtist = function(artist) {
 		console.log('Filter by '+artist);
-		searchFilters.artist = artist;
 		searchFilters.album = null;
+		searchFilters.artist = null;
+
+		searchFilters.artist = artist;
+
 	};
 
 	search.filterByAlbum = function(album) {
 		console.log('Filter by '+album);
+		searchFilters.album = null;
+		// searchFilters.artist = null;
+
 		searchFilters.album = album;
 	};
 
