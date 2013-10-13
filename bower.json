@@ -10,5 +10,7 @@
     "angular-ui-utils": "~0.0.4",
     "angular-placeholders": "*"
   },
-  "dependencies": {}
+  "dependencies": {
+    "jquery-ui": "~1.10.3"
+  }
 }
