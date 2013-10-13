@@ -1,0 +1,29 @@
+.animate-enter, 
+.animate-leave
+{ 
+	-webkit-transition: 400ms cubic-bezier(0.550, 0.055, 0.675, 0.190) all;
+	-moz-transition: 400ms cubic-bezier(0.550, 0.055, 0.675, 0.190) all;
+	-ms-transition: 400ms cubic-bezier(0.550, 0.055, 0.675, 0.190) all;
+	-o-transition: 400ms cubic-bezier(0.550, 0.055, 0.675, 0.190) all;
+	transition: 400ms cubic-bezier(0.550, 0.055, 0.675, 0.190) all;
+	position: relative;
+	display: block;
+	overflow: hidden;
+	text-overflow: clip;
+	white-space:nowrap;
+} 
+
+.animate-leave.animate-leave-active,
+.animate-enter {
+	opacity: 0;
+	width: 0px;
+	height: 0px;
+}
+
+.animate-enter.animate-enter-active, 
+.animate-leave {
+	opacity: 1;
+	width: 150px;
+	height: 30px;
+}
+	

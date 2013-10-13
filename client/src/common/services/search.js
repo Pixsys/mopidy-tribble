@@ -9,6 +9,11 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 		tracks: []
 	};
 
+	var searchFilters = {
+		artist: null,
+		album: null
+	};
+
 	function searchResultReceived(err, results) {
 
 		if(err) { console.log('error', err); return false; }
@@ -18,6 +23,11 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 			albums: [],
 			artists: [],
 			tracks: []
+		};
+
+		searchFilters = {
+			artist:null,
+			album: null
 		};
 
 		// for each search location (eg. Spotify, Local)
@@ -60,6 +70,64 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 
 	};
 
+	search.filterByArtist = function(artist) {
+		console.log('Filter by '+artist);
+		searchFilters.artist = artist;
+		searchFilters.album = null;
+	};
+
+	search.filterByAlbum = function(album) {
+		console.log('Filter by '+album);
+		searchFilters.album = album;
+	};
+
+	search.getFilters = function() {
+		return searchFilters;
+	};
+
 	return search;
 
 }]);
+
+angular.module('services.filter', ['services.search']).
+	filter('artistfilter', function(search) {
+		return function(input, uppercase) {
+
+			var filteredResults = [];
+			var filter = search.getFilters().artist;
+			if(filter) {
+
+				if(input !== undefined) {
+					for (var i = 0; i < input.length; i++) {
+						if(input[i].artists[0].name === filter) {
+							filteredResults.push(input[i]);
+						}
+					}
+				}
+			} else {
+				return input;
+			}
+
+			return filteredResults;
+	};
+}).filter('albumfilter', function(search) {
+		return function(input, uppercase) {
+
+			var filteredResults = [];
+			var filter = search.getFilters().album;
+			if(filter) {
+
+				if(input !== undefined) {
+					for (var i = 0; i < input.length; i++) {
+						if(input[i].album.name === filter) {
+							filteredResults.push(input[i]);
+						}
+					}
+				}
+			} else {
+				return input;
+			}
+
+			return filteredResults;
+	};
+});

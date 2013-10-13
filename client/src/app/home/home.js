@@ -18,6 +18,7 @@ angular.module( 'ngBoilerplate.home', [
   'services.comms',
   'services.player',
   'services.search',
+  'services.filter',
   'directives.player'
 ])
 
@@ -48,6 +49,7 @@ angular.module( 'ngBoilerplate.home', [
   $scope.player = player;
   $scope.search = search;
 
+  
   // get current playing track
   $scope.currentTrack = 'Ben Capistrano - Down to the Fluid Stream';
 
