@@ -3,6 +3,7 @@
  */
 var Mopidy = require('mopidy').Mopidy;
 var events = require('events');
+var request = require('request');
 
 /**
  * Exports the module.
@@ -72,9 +73,25 @@ function jukebox(options) {
 		
 		};
 
-		this.status.now_playing = pretty_track;
+		// Get album artwork
+		request('https://embed.spotify.com/oembed/?url='+pretty_track.uri, function (error, response, body) {
+			
+			if (!error && response.statusCode == 200) {
+			
+				var spotify_api_details = JSON.parse(body)
 
-		this.emit('playback:started', pretty_track);
+				pretty_track.artwork = spotify_api_details.thumbnail_url;
+			
+			} else {
+
+				pretty_track.artwork = null;
+
+			}
+
+			self.status.now_playing = pretty_track;
+
+			self.emit('playback:started', pretty_track);
+		});
 
 	};
 
@@ -128,23 +145,44 @@ function jukebox(options) {
 
 		console.log('[JUKE] addTrack()');
 
-		if(this.status.now_playing) {
+		// Get album artwork
+		request('https://embed.spotify.com/oembed/?url='+track.uri, function (error, response, body) {
+			
+			if (!error && response.statusCode == 200) {
+			
+				var spotify_api_details = JSON.parse(body)
 
-			console.log('[JUKE] '+ track.uri +' added to the queue');
+				track.artwork = spotify_api_details.thumbnail_url;
+			
+			} else {
 
-			this.queue.push(track);
+				track.artwork = null;
 
-			this.emit('playback:queue');
+			}
 
-		} else {
 
-			console.log('[JUKE] '+ track.uri +' sent to be played');
+			if(self.status.now_playing) {
 
-			this.library.playUri(track.uri);
+				console.log('[JUKE] '+ track.uri +' added to the queue');
+				
+				console.log(track);
 
-			this.emit('playback:queue');
+				self.queue.push(track);
+
+				self.emit('playback:queue');
+
+			} else {
+
+				console.log('[JUKE] '+ track.uri +' sent to be played');
+
+				self.library.playUri(track.uri);
+
+				self.emit('playback:queue');
+			
+			};
 		
-		};
+		});
+
 
 	}
 
