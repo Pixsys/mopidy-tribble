@@ -11,10 +11,10 @@ angular.module('services.comms').factory('comms', ['$rootScope', '$location', fu
 		console.log('...connected.');
 	});
 
-
 	return {
 		on: function (eventName, callback) {
-			socket.on(eventName, function () {  
+			console.log('COMMS: on ' + eventName);
+			socket.on(eventName, function () {
 				var args = arguments;
 				$rootScope.$apply(function () {
 					callback.apply(socket, args);
@@ -22,6 +22,7 @@ angular.module('services.comms').factory('comms', ['$rootScope', '$location', fu
 			});
 		},
 		emit: function (eventName, data, callback) {
+			console.log('COMMS: emit ' + eventName);
 			socket.emit(eventName, data, function () {
 				var args = arguments;
 				$rootScope.$apply(function () {

@@ -32,6 +32,9 @@
 
 </div>
 
+<ul ui-sortable ng-model="tracks">
+  <li ng-repeat="track in tracks"><strong>{{ track.title }}</strong><br />{{ track.artist }}</li>
+</ul>
 
 <a href="javascript:void(0);" ng-click="player.online()">Online</a>
 <a href="javascript:void(0);" ng-click="player.printTrack()">Print Track</a>

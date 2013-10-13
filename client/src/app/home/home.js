@@ -17,6 +17,7 @@ angular.module( 'ngBoilerplate.home', [
   'plusOne',
   'services.comms',
   'services.player',
+  'services.search',
   'directives.player'
 ])
 
@@ -41,7 +42,7 @@ angular.module( 'ngBoilerplate.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope, comms, player) {
+.controller( 'HomeCtrl', function HomeController( $scope, comms, player, search) {
 
   // expose player functions to the view
   $scope.player = player;
@@ -49,13 +50,33 @@ angular.module( 'ngBoilerplate.home', [
   // get current playing track
   $scope.currentTrack = 'Ben Capistrano - Down to the Fluid Stream';
 
+  // mock array of tracks
+  $scope.tracks = {
+    0: {
+      title: 'Where do we go from here?',
+      artist: 'Buffy the Vampire Slayer'
+    },
+    1: {
+      title: 'Let me rest in peace',
+      artist: 'Spike'
+    },
+    2: {
+      title: 'A song sung',
+      artist: 'Byme'
+    },
+    3: {
+      title: 'Something else',
+      artist: 'Completely Different'
+    }
+  };
   /**
    * handles submission of a user search for artists.
    * @return {[type]} [description]
    */
   $scope.searchFormWasSubmitted = function() {
 
-    console.log('Searched for: ' + $scope.searchTerm);
+    // console.log('Searched for: ' + $scope.searchTerm);
+    search.search($scope.searchTerm);
 
   };
 
