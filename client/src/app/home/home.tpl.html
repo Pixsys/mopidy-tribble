@@ -24,7 +24,7 @@
     <div class="player-current">
 	    <img src="{{currentTrack.artwork}}" class="list-track__img" />
 	    <div class="list-track__details list-track__details--current-track">
-		    <strong>{{currentTrack.name}}</strong><br />
+		    <span class="list-track__track-name">{{currentTrack.name}}</span><br />
 		    {{currentTrack.artist}}<br />
 		    <small class="list-track__small">
 		    {{currentTrack.album}}</small>
@@ -68,10 +68,10 @@
 				<ul ui-jq="sortable" ng-model="searchResult.tracks" class="list-track">
 				  <li ng-repeat="track in searchResult.tracks | artistfilter | albumfilter" class="list-track__li">
 				  	<!-- <a href="" ng-click="player.addTrack(track)" class="btn">Add</a> -->
-				  	<a href="" ng-click="player.addTrack(track)">{{ track.name }}</a>
+				  	<a href="" ng-click="player.addTrack(track)" class="list-track__track-name">{{ track.name }}</a>
 				  	<br />{{ track.artists[0].name }} &nbsp;&nbsp;
 				  	<a href="" ng-click="search.filterByAlbum(track.album.name)">
-					  	<small style="color: #aaaaaa;">
+					  	<small style="color: #aaa;">
 					  		{{track.album.name}} 
 					  	</small>
 				  	</a>
@@ -82,13 +82,13 @@
 		</div>
 	</div>
 	<!-- play queueue -->
-	<div class="span3" class="play-queue">
+	<div class="span3 play-queue">
 		<h3>Queue <small>{{playbackQueue.length}} tracks</small></h3>
 		<ul ng-model="playbackQueue" class="list-track">
 			<li ng-repeat="track in playbackQueue" class="list-track__li list-track__li--queue">
 				<img src="{{track.artwork}}" class="list-track__img" />
 				<div class="list-track__details list-track__details--play-queue">
-					<strong>{{track.name}}</strong><br />
+					<span class="list-track__track-name">{{track.name}}</span><br />
 					{{track.artist}}<br />
 					<small class="list-track__small">
 				  		{{track.album}} 
