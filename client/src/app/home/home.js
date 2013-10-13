@@ -63,6 +63,18 @@ angular.module( 'ngBoilerplate.home', [
     $scope.currentTrack = data;
   });
 
+  $scope.$on('playback:stopped', function(event) {
+    $scope.currentTrack = { name: 'Stopped',
+                        artist: null,
+                        album: null };
+
+  });
+
+  $scope.$on('playback:queue', function(event, queue) {
+    console.log('updating playback queue');
+    $scope.playbackQueue = queue;
+  });
+
 })
 
 ;

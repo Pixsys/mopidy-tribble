@@ -4,12 +4,43 @@ angular.module('services.player').factory('player', ['$rootScope', '$location', 
 	// expose public functions
 	var player = {};
 
+	function playbackQueueWasUpdated(queue) {
+		console.log('PLAYBACK QUEUE');
+		$rootScope.$broadcast('playback:queue', queue);
+	}
+
+	/**
+	 * Formats the track details into a simpler arrangement.
+	 * @param  {[type]} track [description]
+	 * @return {[type]}       [description]
+	 */
+	function prettyTrack(track) {
+
+		var pretty_track = {
+
+            'name'    : track.name,
+            'artist': track.artists[0].name,
+            'album'    : track.album.name,
+            'uri'    : track.uri
+
+        };
+
+        return pretty_track;
+	}
+
+	function playbackWasStopped() {
+		$rootScope.$broadcast('playback:stopped');
+	}
+
 	function playbackWasStarted(data) {
+		console.log('PLAYBACK WAS STARTED', data);
 		$rootScope.$broadcast('playback:started', data);
 	}
 
 	function bindEvents() {
 		comms.on('playback:started', playbackWasStarted);
+		comms.on('playback:stopped', playbackWasStopped);
+		comms.on('playback:queue', playbackQueueWasUpdated);
 	}
 
 	function init() {
@@ -21,14 +52,11 @@ angular.module('services.player').factory('player', ['$rootScope', '$location', 
 	// go
 	init();
 
-	comms.on('playback:started', function(data) {
-		$rootScope.$broadcast('playback:started', data);
-	});
-
 	player.play = function(track) {
 		console.log('PLAY');
 		if(track) {
-			console.log(track.uri);
+			console.log('ALEX');
+			console.log(track);
 			comms.emit('jukebox:playTrack', track.uri);
 		} else {
 			comms.emit('jukebox:play');
@@ -48,6 +76,11 @@ angular.module('services.player').factory('player', ['$rootScope', '$location', 
 	player.previousTrack = function() {
 		console.log('PREVIOUS');
 		comms.emit('jukebox:previousTrack');
+	};
+
+	player.addTrack = function(track) {
+		console.log('ADD TRACK');
+		comms.emit('jukebox:addTrack', prettyTrack(track));
 	};
 
 	return player;

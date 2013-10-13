@@ -36,6 +36,16 @@
 
 </div>
 
+<!-- play queueue -->
+<h3>Queue</h3>
+<ul ng-model="playbackQueue" class="list-track">
+	<li ng-repeat="track in playbackQueue" class="list-track__li--queue">
+		<a href="" ng-click="player.play(track)">
+		<i class="icon-play"></i></a>
+		{{track.name}} - {{track.artist}} {{track.album}}
+	</li>
+</ul>
+
 <!-- search results -->
 <div class="row">
 	<div class="span4">
@@ -64,16 +74,11 @@
 		  	<br />{{ track.artists[0].name }} &nbsp;&nbsp;
 		  	<a href="" ng-click="search.filterByAlbum(track.album.name)">
 			  	<small style="color: #aaaaaa;">
-			  		{{track.album.name}}
+			  		{{track.album.name}} 
 			  	</small>
 		  	</a>
+		  	<a href="" ng-click="player.addTrack(track)" class="btn">Add</a>
 		  </li>
 		</ul>
 	</div>
 </div>
-
-<a href="javascript:void(0);" ng-click="player.online()">Online</a>
-<a href="javascript:void(0);" ng-click="player.printTrack()">Print Track</a>
-<a href="javascript:void(0);" ng-click="player.playbackStarted()">Playback Started</a>
-
-<a href="javascript:void(0);" ng-click="player.library.search()">Search</a>
