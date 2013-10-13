@@ -18,7 +18,8 @@ function jukebox(options) {
 	var self = this;
 
 	this.mopidy = new Mopidy({
-		webSocketUrl: "ws://192.168.0.6:6680/mopidy/ws/"
+		// webSocketUrl: "ws://192.168.0.6:6680/mopidy/ws/"
+		webSocketUrl: "ws://localhost:6680/mopidy/ws/"
 	});
 
 

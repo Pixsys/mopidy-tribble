@@ -1,10 +1,25 @@
 angular.module('services.player', ['services.comms']);
 angular.module('services.player').factory('player', ['$rootScope', '$location', 'comms', function($rootScope, $location, comms){
 
-	console.log('Initialising player...');
-
 	// expose public functions
 	var player = {};
+
+	function playbackWasStarted(data) {
+		$rootScope.$broadcast('playback:started', data);
+	}
+
+	function bindEvents() {
+		comms.on('playback:started', playbackWasStarted);
+	}
+
+	function init() {
+
+		console.log('Initialising player...');
+		bindEvents();
+	}
+
+	// go
+	init();
 
 	player.play = function() {
 		console.log('PLAY');

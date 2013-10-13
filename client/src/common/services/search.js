@@ -3,73 +3,62 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 
 	console.log('Initialising search...');
 
+	var searchResult = {
+		albums: [],
+		artists: [],
+		tracks: []
+	};
+
 	function searchResultReceived(err, results) {
 
-		if(err) { console.log('error'); return false; }
+		if(err) { console.log('error', err); return false; }
 
-		console.log('search Results Received');
-		console.log(results);
+		// reset search
+		searchResult = {
+			albums: [],
+			artists: [],
+			tracks: []
+		};
 
+		// for each search location (eg. Spotify, Local)
+		for (var i = 0; i < results.length; i++) {
+
+			// for each album
+			if(results[i].hasOwnProperty('albums')) {
+				for (var j = 0; j < results[i].albums.length; j++) {
+					searchResult.albums.push(results[i].albums[j]);
+				}
+			}
+
+			// for each artist
+			if(results[i].hasOwnProperty('artists')) {
+				for (var k = 0; k < results[i].artists.length; k++) {
+					searchResult.artists.push(results[i].artists[k]);
+				}
+			}
+
+			// for each track
+			if(results[i].hasOwnProperty('tracks')) {
+				for (var m = 0; m < results[i].tracks.length; m++) {
+					searchResult.tracks.push(results[i].tracks[m]);
+				}
+			}
+		}
+
+		// broadcast results
+		$rootScope.$broadcast('search:result', searchResult);
 	}
 
 	// expose public functions
 	var search = {};
 
-	search.search = function(string) {
-		console.log('SEARCH: '+string);
+	search.any = function(string) {
 
 		var searchObject = {'any': [string]};
 
 		comms.emit('jukebox:library:search', searchObject, searchResultReceived);
-		// searchResultReceived(false, 'string');
+
 	};
-
-	var mockResults = [
-		{
-			__model__: 'SearchResult',
-			uri: 'local:search'
-		},
-		{
-			__model__: 'SearchResult',
-			artists: [
-				{
-					__model__: 'Artist',
-					name: 'Incubus',
-					uri: 'spotify:artist:3YcBF2ttyueytpXtEzn1Za'
-				}
-			],
-			albums: [
-				{ 
-					date: 2012,
-					__model__: 'Album',
-					artists:    [ [Object] ],
-					uri: 'spotify:album:6peEdPVO73WtgGah5sEhX4',
-					name: 'The Essential Incubus'
-				}
-
-			],
-			tracks: [
-				{
-					album: {
-						date: 1999,
-						__model__: 'Album',
-						artists: '',
-						uri: 'spotify:album:2i6nd4FV6y7K9fln6eelmR',
-						name: 'Make Yourself'
-					},
-					__model__: 'Track',
-					name: 'Drive',
-					uri: 'spotify:track:7nnWIPM5hwE3DaUBkvOIpy',
-					length: 233000,
-					track_no: 8,
-					artists: [ [Object] ],
-					date: 1999,
-					bitrate: null
-				}
-			],
-			uri: 'spotify:search:incubus'
-		}
-	];
 
 	return search;
 

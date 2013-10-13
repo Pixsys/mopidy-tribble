@@ -24,17 +24,36 @@
 	</div>
 
 	<div class="player-search">
-		<form ng-submit="searchFormWasSubmitted()" class="form-search">
+		<form ng-submit="search.any(searchTerm)" class="form-search">
 			<input type="text" name="search" ng-model="searchTerm" placeholder="search..." class="input-medium search-query">
-			{{searchTerm}}
 		</form>
 	</div>
 
 </div>
+<div class="row">
+	<div class="span4">
+		<h3>Artists</h3>
+		<ul ui-sortable ng-model="searchResult.artists">
+		  <li ng-repeat="artist in searchResult.artists">
+		  	<a href="{{ artist.uri }}">{{ artist.name }}</a>
+		  </li>
+		</ul>
+	</div>
 
-<ul ui-sortable ng-model="tracks">
-  <li ng-repeat="track in tracks"><strong>{{ track.title }}</strong><br />{{ track.artist }}</li>
-</ul>
+	<div class="span4">
+		<h3>Albums</h3>
+		<ul ui-sortable ng-model="searchResult.albums">
+		  <li ng-repeat="album in searchResult.albums"><strong>{{ album.name }}</strong><br />{{ album.artists[0].name }}</li>
+		</ul>
+	</div>
+
+	<div class="span4">
+		<h3>Tracks</h3>
+		<ul ui-sortable ng-model="searchResult.tracks">
+		  <li ng-repeat="track in searchResult.tracks"><strong>{{ track.name }}</strong><br />{{ track.artists[0].name }}</li>
+		</ul>
+	</div>
+</div>
 
 <a href="javascript:void(0);" ng-click="player.online()">Online</a>
 <a href="javascript:void(0);" ng-click="player.printTrack()">Print Track</a>
