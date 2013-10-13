@@ -49,15 +49,18 @@ angular.module( 'ngBoilerplate.home', [
   $scope.player = player;
   $scope.search = search;
 
-  
-  // get current playing track
-  $scope.currentTrack = 'Ben Capistrano - Down to the Fluid Stream';
+  // default.
+  $scope.currentTrack = 'Stopped.';
 
   $scope.$on('search:result', function(obj, searchResult) {
     console.log('Search result:');
     console.log(searchResult);
     $scope.searchResult = {};
     $scope.searchResult = searchResult;
+  });
+
+  $scope.$on('playback:started', function(event, data) {
+    $scope.currentTrack = data;
   });
 
 })

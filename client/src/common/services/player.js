@@ -21,6 +21,10 @@ angular.module('services.player').factory('player', ['$rootScope', '$location', 
 	// go
 	init();
 
+	comms.on('playback:started', function(data) {
+		$rootScope.$broadcast('playback:started', data);
+	});
+
 	player.play = function(track) {
 		console.log('PLAY');
 		if(track) {
