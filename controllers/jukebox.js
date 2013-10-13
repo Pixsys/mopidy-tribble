@@ -165,8 +165,6 @@ function jukebox(options) {
 
 				console.log('[JUKE] '+ track.uri +' added to the queue');
 				
-				console.log(track);
-
 				self.queue.push(track);
 
 				self.emit('playback:queue');
@@ -203,6 +201,8 @@ function jukebox(options) {
 		search : function(params, callback) {
 
 			console.log('[JUKE] search()');
+
+			console.log(params);
 
 			self.mopidy.library.search(params).then(
 				function(data) {
