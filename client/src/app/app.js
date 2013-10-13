@@ -4,7 +4,7 @@ var app = angular.module( 'ngBoilerplate', [
   'ngBoilerplate.home',
   'ngBoilerplate.about',
   'ngBoilerplate.status',
-  'ui.state',
+  'ui.router',
   'ui.route'
 ])
 
