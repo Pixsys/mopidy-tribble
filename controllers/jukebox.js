@@ -36,7 +36,7 @@ function jukebox(options) {
 
 		console.log('Mopidy Online');
 
-		// this.library.playUri('spotify:track:0bM5JsBjWU4RyYlMbp0voY').bind(this);
+		// this.library.playUri('spotify:track:0bM5JsBjWU4RyYlMbp0voY');
 
 
 	};
@@ -73,6 +73,8 @@ function jukebox(options) {
 		this.emit('playback:started', pretty_track);
 
 	};
+
+	
 
 	this.nextTrack = function () {
 
@@ -133,15 +135,21 @@ function jukebox(options) {
 
 		playUri : function(uri) {
 
-			mopidy.library.lookup(uri).then(function(track) {
-			
-				console.log('playUri');
+			console.log('playUri');
 
-				this.mopidy.tracklist.add([track])
+			self.mopidy.library.lookup(uri).then(function(track) {
+					
+				console.log(track);
+
+				// console.log(self.mopidy);
+
+				self.mopidy.tracklist.clear();
+
+				self.mopidy.tracklist.add(track);
 			
-				this.play();
+				self.play();
 			
-			}.bind(this), console.error.bind(console));
+			}, console.error.bind(console));
 			
 		}
 	}
@@ -150,7 +158,7 @@ function jukebox(options) {
 	this.mopidy.on('event:trackPlaybackStarted', this.playbackStarted.bind(this));
 
 	// Dev - echo all events
-	// this.mopidy.on(console.log.bind(console));
+	this.mopidy.on(console.log.bind(console));
 
 }
 
