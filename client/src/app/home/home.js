@@ -75,6 +75,16 @@ angular.module( 'ngBoilerplate.home', [
     $scope.playbackQueue = queue;
   });
 
+  // watch
+  $scope.$watch('searchTerm', function() {
+    console.log($scope.searchTerm);
+
+    if(!$scope.searchTerm) {
+      search.clearSearch();
+      $scope.searchResult = [];
+    }
+  });
+
 })
 
 ;
