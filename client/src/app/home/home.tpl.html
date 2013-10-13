@@ -38,7 +38,7 @@
 <div class="row">
 	<div class="span4">
 		<h3>Artists <small>{{searchResult.artists.length}}</small></h3>
-		<ul ui-sortable ng-model="searchResult.artists" class="list-artist">
+		<ul ui-sortable ng-model="searchResult.artists" class="list-artist selectableow ">
 		  <li ng-repeat="artist in searchResult.artists" class="list-artist__li">
 		  	<a href="" ng-click="search.filterByArtist(artist.name)">{{ artist.name }}</a>
 		  </li>
@@ -56,9 +56,9 @@
 
 	<div class="span4">
 		<h3>Tracks <small>{{searchResult.tracks.length}}</small></h3>
-		<ul ui-sortable ng-model="searchResult.tracks" class="list-track">
+		<ul ui-jq="sortable" ng-model="searchResult.tracks" class="list-track">
 		  <li ng-repeat="track in searchResult.tracks | artistfilter | albumfilter" class="list-track__li">
-		  	<a href="">{{ track.name }}</a>
+		  	<a href="" ng-click="player.play(track)">{{ track.name }}</a>
 		  	<br />{{ track.artists[0].name }} &nbsp;&nbsp;
 		  	<a href="" ng-click="search.filterByAlbum(track.album.name)">
 			  	<small style="color: #aaaaaa;">

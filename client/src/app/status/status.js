@@ -19,10 +19,6 @@ angular.module( 'ngBoilerplate.status', [
 })
 
 .controller( 'StatusCtrl', function StatusCtrl( $scope, comms ) {
-  
-
-  
-
 
   // This is simple a demo for UI Boostrap.
   $scope.dropdownDemoItems = [

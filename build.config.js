@@ -22,7 +22,7 @@ module.exports = {
   app_files: {
     js: [ 'client/src/**/*.js', '!src/**/*.spec.js', '!src/assets/**/*.js' ],
     jsunit: [ 'client/src/**/*.spec.js' ],
-    
+
     coffee: [ 'client/src/**/*.coffee', '!src/**/*.spec.coffee' ],
     coffeeunit: [ 'client/src/**/*.spec.coffee' ],
 
@@ -62,6 +62,12 @@ module.exports = {
    */
   vendor_files: {
     js: [
+      'client/vendor/jquery/jquery.js',
+      'client/vendor/jquery-ui/ui/jquery-ui.js',
+      // 'client/vendor/jquery-ui/ui/jquery.ui.core.js',
+      // 'client/vendor/jquery-ui/ui/jquery.ui.mouse.js',
+      // 'client/vendor/jquery-ui/ui/jquery.ui.widget.js',
+      // 'client/vendor/jquery-ui/ui/jquery.ui.selectable.js',
       'client/vendor/angular/angular.js',
       'client/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
       'client/vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
@@ -69,6 +75,8 @@ module.exports = {
       'client/vendor/angular-ui-utils/modules/route/route.js'
     ],
     css: [
+      'client/vendor/jquery-ui/themes/base/jquery-ui.css',
+      // 'client/vendor/jquery-ui/themes/base/jquery.ui.selectable.css'
     ],
     assets: [
     ]

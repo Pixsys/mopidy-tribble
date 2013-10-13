@@ -21,9 +21,14 @@ angular.module('services.player').factory('player', ['$rootScope', '$location', 
 	// go
 	init();
 
-	player.play = function() {
+	player.play = function(track) {
 		console.log('PLAY');
-		comms.emit('jukebox:play');
+		if(track) {
+			console.log(track.uri);
+			comms.emit('jukebox:playTrack', track.uri);
+		} else {
+			comms.emit('jukebox:play');
+		}
 	};
 
 	player.pause = function() {
