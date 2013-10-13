@@ -63,12 +63,19 @@ var server = http.createServer(app).listen(app.get('port'), function(){
  */
 io = io.listen(server);
 
+io.set('log level', 0);
+
 io.sockets.on('connection', function(socket) {
 
-	console.log('connection on socket!');
+	console.log('[SOCKET] New Connection from '+socket.id);
+
+	// Send current status
+	socket.emit('playback:started', $controller.jukebox.status.now_playing);
+	socket.emit('playback:queue', $controller.jukebox.queue);
 
 	socket.on('jukebox:play', $controller.jukebox.play.bind($controller.jukebox));
 	socket.on('jukebox:playTrack', $controller.jukebox.library.playUri.bind($controller.jukebox));
+	socket.on('jukebox:addTrack', $controller.jukebox.addTrack.bind($controller.jukebox));
 	socket.on('jukebox:pause', $controller.jukebox.pause.bind($controller.jukebox));
 	socket.on('jukebox:previousTrack', $controller.jukebox.previousTrack.bind($controller.jukebox));
 	socket.on('jukebox:nextTrack', $controller.jukebox.nextTrack.bind($controller.jukebox));
@@ -95,11 +102,29 @@ io.sockets.on('connection', function(socket) {
 });
 
 /**
- * SocketIO for Web Interface (jukebox relay)
+ * Jukebox events
  */
 $controller.jukebox.on('playback:started', function(track) {
 
 	io.sockets.emit('playback:started', track);
+
+})
+
+$controller.jukebox.on('playback:paused', function() {
+
+	io.sockets.emit('playback:paused');
+
+})
+
+$controller.jukebox.on('playback:stopped', function() {
+
+	io.sockets.emit('playback:stopped');
+
+})
+
+$controller.jukebox.on('playback:queue', function() {
+
+	io.sockets.emit('playback:queue', $controller.jukebox.queue);
 
 })
 
