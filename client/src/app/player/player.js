@@ -1,5 +1,5 @@
 angular.module( 'ngBoilerplate.player', [
-  'ui.state',
+  'ui.router',
   'placeholders',
   'ui.bootstrap'
 ])

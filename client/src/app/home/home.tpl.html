@@ -1,6 +1,7 @@
 
-<div class="">
-	<div class="player-controls" class="btn-group" style="margin: 9px 0;">
+<div class="header row">
+
+	<div class="player-controls span3" class="btn-group" style="margin: 9px 0;">
 		<button ng-click="player.previousTrack()"  class="btn">
 			<i class="icon-fast-backward"></i>
 			<!-- Previous -->
@@ -19,19 +20,55 @@
 		</button>
 	</div>
 
-	<div class="player-current">
+	<!-- currently playing -->
+	<div class="player-current span4">
 	Currently {{currentTrack}}
 	</div>
 
-	<div class="player-search">
-		<form ng-submit="searchFormWasSubmitted()" class="form-search">
+	<!-- search form -->
+	<div class="player-search span4">
+		<form ng-submit="search.any(searchTerm)" class="form form-search">
 			<input type="text" name="search" ng-model="searchTerm" placeholder="search..." class="input-medium search-query">
-			{{searchTerm}}
 		</form>
 	</div>
 
 </div>
 
+<!-- search results -->
+<div class="row">
+	<div class="span4">
+		<h3>Artists <small>{{searchResult.artists.length}}</small></h3>
+		<ul ui-sortable ng-model="searchResult.artists" class="list-artist">
+		  <li ng-repeat="artist in searchResult.artists" class="list-artist__li">
+		  	<a href="" ng-click="search.filterByArtist(artist.name)">{{ artist.name }}</a>
+		  </li>
+		</ul>
+	</div>
+
+	<div class="span4">
+		<h3>Albums <small>{{searchResult.albums.length}}</small></h3>
+		<ul ui-sortable ng-model="searchResult.albums" class="list-album">
+		  <li ng-repeat="album in searchResult.albums | artistfilter" ng-animate="'animate'" class="list-album__li">
+		  	<a href="" ng-click="search.filterByAlbum(album.name)">{{ album.name }}</a><br />{{ album.artists[0].name }}
+		  </li>
+		</ul>
+	</div>
+
+	<div class="span4">
+		<h3>Tracks <small>{{searchResult.tracks.length}}</small></h3>
+		<ul ui-sortable ng-model="searchResult.tracks" class="list-track">
+		  <li ng-repeat="track in searchResult.tracks | artistfilter | albumfilter" class="list-track__li">
+		  	<a href="">{{ track.name }}</a>
+		  	<br />{{ track.artists[0].name }} &nbsp;&nbsp;
+		  	<a href="" ng-click="search.filterByAlbum(track.album.name)">
+			  	<small style="color: #aaaaaa;">
+			  		{{track.album.name}}
+			  	</small>
+		  	</a>
+		  </li>
+		</ul>
+	</div>
+</div>
 
 <a href="javascript:void(0);" ng-click="player.online()">Online</a>
 <a href="javascript:void(0);" ng-click="player.printTrack()">Print Track</a>

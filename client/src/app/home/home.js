@@ -13,10 +13,12 @@
  * specified, as shown below.
  */
 angular.module( 'ngBoilerplate.home', [
-  'ui.state',
+  'ui.router',
   'plusOne',
   'services.comms',
   'services.player',
+  'services.search',
+  'services.filter',
   'directives.player'
 ])
 
@@ -41,23 +43,22 @@ angular.module( 'ngBoilerplate.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope, comms, player) {
+.controller( 'HomeCtrl', function HomeController( $scope, comms, player, search) {
 
-  // expose player functions to the view
+  // expose player, search functions to the view
   $scope.player = player;
+  $scope.search = search;
 
+  
   // get current playing track
   $scope.currentTrack = 'Ben Capistrano - Down to the Fluid Stream';
 
-  /**
-   * handles submission of a user search for artists.
-   * @return {[type]} [description]
-   */
-  $scope.searchFormWasSubmitted = function() {
-
-    console.log('Searched for: ' + $scope.searchTerm);
-
-  };
+  $scope.$on('search:result', function(obj, searchResult) {
+    console.log('Search result:');
+    console.log(searchResult);
+    $scope.searchResult = {};
+    $scope.searchResult = searchResult;
+  });
 
 })
 

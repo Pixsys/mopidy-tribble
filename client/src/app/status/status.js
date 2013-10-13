@@ -1,5 +1,5 @@
 angular.module( 'ngBoilerplate.status', [
-  'ui.state',
+  'ui.router',
   'placeholders',
   'ui.bootstrap',
   'services.comms'

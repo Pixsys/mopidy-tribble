@@ -14,8 +14,11 @@ exports = module.exports = new jukebox;
  */
 function jukebox(options) {
 	"use strict";
-	
+
+	var self = this;
+
 	this.mopidy = new Mopidy({
+		// webSocketUrl: "ws://192.168.0.6:6680/mopidy/ws/"
 		webSocketUrl: "ws://localhost:6680/mopidy/ws/"
 	});
 
@@ -113,8 +116,7 @@ function jukebox(options) {
 
 			console.log('search called');
 
-			mopidy.library.search(params).then(
-
+			self.mopidy.library.search(params).then(
 				function(data) {
 
 					console.log('search complete');
