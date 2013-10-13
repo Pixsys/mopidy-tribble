@@ -133,6 +133,7 @@ angular.module('services.filter', ['services.search']).
 					}
 				}
 			} else {
+
 				return input;
 			}
 

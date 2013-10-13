@@ -23,7 +23,7 @@
     <!-- currently playing -->
     <div class="player-current">
 	    <img src="{{currentTrack.artwork}}" class="list-track__img" />
-	    <div class="list-track__details">
+	    <div class="list-track__details list-track__details--current-track">
 		    <strong>{{currentTrack.name}}</strong><br />
 		    {{currentTrack.artist}}<br />
 		    <small class="list-track__small">
@@ -89,7 +89,7 @@
 				<img src="{{track.artwork}}" class="list-track__img" />
 				<div class="list-track__details list-track__details--play-queue">
 					<strong>{{track.name}}</strong><br />
-					{{track.artist}} 
+					{{track.artist}}<br />
 					<small class="list-track__small">
 				  		{{track.album}} 
 				  	</small>
