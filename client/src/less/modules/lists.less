@@ -41,7 +41,39 @@
 .list-track__track-name {
 	font-weight: 500;
 }
+.list-track__track-artist {
+	display: block;
+}
+.list-track__track-length {
+	display: none;
+}
 
+.fullscreen .list-track__li {
+
+}
+.fullscreen .list-track__details--play-queue {
+	line-height: 50px;
+}
+.fullscreen .list-track__track-name {
+	display: inline-block;
+	float: left;
+	margin-right: 15px;
+}
+.fullscreen .list-track__track-artist {
+	display: inline-block;
+	float: left;
+	margin-right: 15px;
+}
+.fullscreen .list-track__track-length {
+	display: inline-block;
+	float: left;
+	margin-right: 15px;
+}
+.fullscreen .list-track__small {
+	display: inline-block;
+	float: left;
+
+}
 .list-album {
 	.list-reset();
 }
@@ -60,4 +92,26 @@
 	margin-left: 3%;
 	float: left;
 	box-sizing: border-box;
+}
+
+// animate
+.animate-enter-setup {
+ -webkit-transition: 1s linear all; /* Safari/Chrome */
+ -moz-transition: 1s linear all; /* Firefox */
+ -ms-transition: 1s linear all; /* IE10 */
+ -o-transition: 1s linear all; /* Opera */
+ transition: 1s linear all; /* Future Browsers */
+ 
+ /* The animation preparation code */
+ opacity: 0;
+}
+ 
+/*
+ Keep in mind that you want to combine both CSS
+ classes together to avoid any CSS-specificity
+ conflicts
+*/
+.animate-enter-setup.animate-enter-start {
+ /* The animation code itself */
+ opacity: 1;
 }
