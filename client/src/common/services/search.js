@@ -14,6 +14,23 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 		album: null
 	};
 
+	var blackList  = [
+		'taylor swift', 'miley cyrus', 'glee',
+		'justin bieber', 'rebecca black', 'rihanna',
+		'britney spears', 'justin timberlake'
+	];
+
+	function stringIsInBlackList(string) {
+
+		for (var i = 0; i < blackList.length; i++) {
+			if(string.toUpperCase() === blackList[i].toUpperCase()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	function searchResultReceived(err, results) {
 
 		if(err) { console.log('error', err); return false; }
@@ -66,7 +83,11 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 
 		var searchObject = {'any': [string]};
 
-		comms.emit('jukebox:library:search', searchObject, searchResultReceived);
+		if(!stringIsInBlackList(string)) {
+
+			comms.emit('jukebox:library:search', searchObject, searchResultReceived);
+
+		}
 
 	};
 
@@ -96,6 +117,7 @@ angular.module('services.search').factory('search', ['$rootScope', '$location', 
 }]);
 
 angular.module('services.filter', ['services.search']).
+
 	filter('artistfilter', function(search) {
 		return function(input, uppercase) {
 
@@ -111,11 +133,13 @@ angular.module('services.filter', ['services.search']).
 					}
 				}
 			} else {
+
 				return input;
 			}
 
 			return filteredResults;
 	};
+
 }).filter('albumfilter', function(search) {
 		return function(input, uppercase) {
 
