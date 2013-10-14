@@ -42,6 +42,12 @@
   </div>
 </div>
 
+<ul ng-model="messages.list">
+	<li ng-repeat="message in messages.list">
+		{{message}}
+	</li>
+</ul>
+
 <div class="row">
 	<div class="span8" ng-animate=" 'animation' " ng-show="searchTerm">
 		<h3>Search <small>{{searchTerm}}</small></h3>
@@ -90,14 +96,23 @@
 			<li ng-repeat="track in playbackQueue" class="list-track__li list-track__li--queue">
 				<img src="{{track.artwork}}" class="list-track__img" />
 				<div class="list-track__details list-track__details--play-queue">
+
+					<span class="list-track__track-votes">{{track.votes}}</span>
+
+					<a href="" ng-click="playlist.voteUp(track)" class="list-track__vote">
+						<i class="icon-chevron-sign-up"></i>
+					</a>
+
+					<a href="" ng-click="playlist.voteDown(track)" class="list-track__vote">
+						<i class="icon-chevron-sign-down"></i>
+					</a>
+
 					<span class="list-track__track-name">{{track.name}}</span>
 					<span class="list-track__track-artist">{{track.artist}}</span>
 					<span class="list-track__track-length"><small>{{track.length | date:'mm:ss' }}</small></span>
 					<small class="list-track__small">
 				  		{{track.album}} 
 				  	</small>
-
-				  	
 				</div>
 			</li>
 		</ul>
