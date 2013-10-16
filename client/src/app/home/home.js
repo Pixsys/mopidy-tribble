@@ -17,6 +17,7 @@ angular.module( 'ngBoilerplate.home', [
   'plusOne',
   'services.comms',
   'services.player',
+  'services.playlist',
   'services.search',
   'services.filter',
   'directives.player'
@@ -43,10 +44,11 @@ angular.module( 'ngBoilerplate.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope, comms, player, search) {
+.controller( 'HomeCtrl', function HomeController( $scope, comms, player, playlist, search) {
 
   // expose player, search functions to the view
   $scope.player = player;
+  $scope.playlist = playlist;
   $scope.search = search;
 
   // default.
@@ -74,6 +76,8 @@ angular.module( 'ngBoilerplate.home', [
     console.log('updating playback queue');
     $scope.playbackQueue = queue;
   });
+
+  $scope.$on('message', function(messages) { $scope.messages = messages })
 
   // watch
   $scope.$watch('searchTerm', function() {
