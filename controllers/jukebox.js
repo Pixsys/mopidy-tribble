@@ -160,7 +160,7 @@ function jukebox(options) {
 
 		// track = this.formatTrack(track);
 
-		// track.votes = 0;
+		track.votes = 0;
 
 		if(this.checkDuplicate(track.uri)) {
 
