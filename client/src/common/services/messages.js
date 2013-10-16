@@ -34,7 +34,7 @@ angular.module('services.messages').factory('messages', ['$rootScope', '$locatio
 
 	// messages.show = function(message) {
 
-	// 	$rootScope.emit('message:show', message);
+	// $rootScope.emit('message:show', message);
 
 	// };
 

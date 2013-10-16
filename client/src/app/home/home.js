@@ -77,7 +77,7 @@ angular.module( 'ngBoilerplate.home', [
     $scope.playbackQueue = queue;
   });
 
-  $scope.$on('message', function(messages) { $scope.messages = messages })
+  $scope.$on('message', function(messages) { $scope.messages = messages; });
 
   // watch
   $scope.$watch('searchTerm', function() {
