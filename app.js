@@ -80,6 +80,9 @@ io.sockets.on('connection', function(socket) {
 	socket.on('jukebox:previousTrack', $controller.jukebox.previousTrack.bind($controller.jukebox));
 	socket.on('jukebox:nextTrack', $controller.jukebox.nextTrack.bind($controller.jukebox));
 
+	socket.on('jukebox:voteUp', $controller.jukebox.vote.up.bind($controller.jukebox));
+	socket.on('jukebox:voteDown', $controller.jukebox.vote.down.bind($controller.jukebox));
+
 	socket.on('jukebox:library:search', function (request, response) {
 				
 		$controller.jukebox.library.search(request, function(err, results) {
@@ -104,6 +107,12 @@ io.sockets.on('connection', function(socket) {
 /**
  * Jukebox events
  */
+$controller.jukebox.on('log', function(message) {
+
+	io.sockets.emit('playback:log', message);
+
+});
+
 $controller.jukebox.on('playback:started', function(track) {
 
 	io.sockets.emit('playback:started', track);

@@ -33,12 +33,12 @@ function jukebox(options) {
 
 	events.EventEmitter.call(this);
 
-	this.online = function() {
+	this.online = function(object) {
 
-		console.log('Mopidy Online');
+		console.log('[JUKE] Mopidy Online');
 
+		// this.checkDuplicate();
 		// this.library.playUri('spotify:track:0bM5JsBjWU4RyYlMbp0voY');
-
 
 	};
 
@@ -71,6 +71,7 @@ function jukebox(options) {
 			'album'	: track.tl_track.track.album.name,
 			'uri'	: track.tl_track.track.uri,
 			'length': track.tl_track.track.length,
+			'votes'	: 0
 		
 		};
 
@@ -142,46 +143,127 @@ function jukebox(options) {
 
 	};
 
+	this.checkDuplicate = function(uri) {
+
+		console.log('[JUKE] checkDuplicate()');
+
+		for (var x in this.queue) {
+			if(this.queue[x].uri === uri) return true
+		}
+
+		return false;
+	};
+
 	this.addTrack = function(track) {
 
 		console.log('[JUKE] addTrack()');
 
-		// Get album artwork
-		request('https://embed.spotify.com/oembed/?url='+track.uri, function (error, response, body) {
-			
-			if (!error && response.statusCode == 200) {
-			
-				var spotify_api_details = JSON.parse(body)
+		// track = this.formatTrack(track);
 
-				track.artwork = spotify_api_details.thumbnail_url;
-			
-			} else {
+		// track.votes = 0;
 
-				track.artwork = null;
+		if(this.checkDuplicate(track.uri)) {
+
+			self.emit('log', track.name+' is a duplicate');
+
+		} else {
+
+			// Get album artwork
+			request('https://embed.spotify.com/oembed/?url='+track.uri, function (error, response, body) {
+				
+				if (!error && response.statusCode == 200) {
+				
+					var spotify_api_details = JSON.parse(body)
+
+					track.artwork = spotify_api_details.thumbnail_url;
+				
+				} else {
+
+					track.artwork = null;
+
+				}
+
+
+				if(self.status.now_playing) {
+
+					console.log('[JUKE] '+ track.uri +' added to the queue');
+
+					self.emit('log', track.name+' added to queue');
+					
+					self.queue.push(track);
+
+					self.emit('playback:queue');
+
+				} else {
+
+					console.log('[JUKE] '+ track.uri +' sent to be played');
+
+					self.emit('log', track.name+' sent to player');
+					
+					self.library.playUri(track.uri);
+
+					self.emit('playback:queue');
+				
+				};
+			
+			});
+			
+		}
+
+
+	};
+
+	this.sortQueue = function() {
+
+		this.queue.sort(function(a, b){
+			return b.votes-a.votes;
+		});
+
+		self.emit('playback:queue');
+
+	}
+
+	this.vote = {
+
+		up : function(uri) {
+
+			console.log('[JUKE] Vote track '+uri+' up.');
+
+			for(var x in this.queue) {
+
+				if(this.queue[x].uri === uri) {
+
+					console.log('[JUKE] Found track at '+x);
+
+					this.queue[x].votes++;
+
+					this.sortQueue();
+
+				}
 
 			}
 
+		},
 
-			if(self.status.now_playing) {
+		down : function(uri) {
 
-				console.log('[JUKE] '+ track.uri +' added to the queue');
-				
-				self.queue.push(track);
+			console.log('[JUKE] Vote track '+uri+' down.');
 
-				self.emit('playback:queue');
+			for(var x in this.queue) {
 
-			} else {
+				if(this.queue[x].uri === uri) {
 
-				console.log('[JUKE] '+ track.uri +' sent to be played');
+					console.log('[JUKE] Found track at '+x);
 
-				self.library.playUri(track.uri);
+					this.queue[x].votes--;
 
-				self.emit('playback:queue');
-			
-			};
-		
-		});
+					this.sortQueue();
 
+				}
+
+			}
+
+		}
 
 	}
 
