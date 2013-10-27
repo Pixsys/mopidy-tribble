@@ -6,7 +6,8 @@ angular.module('services.comms').factory('comms', ['$rootScope', '$location', fu
 	console.log('Initialising comms...');
 
 	// var socket = io.connect('http://localhost:3000');
-	var socket = io.connect('http://music.ever:3000');
+	// var socket = io.connect('http://music.ever:3000');
+	var socket = io.connect();
 
 	socket.on('connect', function() {
 		console.log('...connected.');

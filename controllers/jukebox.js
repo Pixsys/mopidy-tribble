@@ -18,6 +18,8 @@ function jukebox(options) {
 
 	var self = this;
 
+	events.EventEmitter.call(this);
+
 	this.mopidy = new Mopidy({
 		// webSocketUrl: "ws://192.168.0.17:6680/mopidy/ws/"
 		webSocketUrl: "ws://localhost:6680/mopidy/ws/"
@@ -31,7 +33,6 @@ function jukebox(options) {
 
 	this.queue = [];
 
-	events.EventEmitter.call(this);
 
 	this.online = function(object) {
 
@@ -39,6 +40,9 @@ function jukebox(options) {
 
 		// this.checkDuplicate();
 		// this.library.playUri('spotify:track:0bM5JsBjWU4RyYlMbp0voY');
+		// this.addUri('spotify:track:2uL5pB9kAb21KCQG0rJ9Q3');
+		this.addAlbum('spotify:album:5LdqbRBfjz6qfhC4Q77rDe');
+
 
 	};
 
@@ -102,7 +106,7 @@ function jukebox(options) {
 		if(this.queue[0]) {
 
 			var to_be_played = this.queue.shift();
-			
+
 			this.library.playUri(to_be_played.uri);
 
 			this.emit('playback:queue');
@@ -154,12 +158,64 @@ function jukebox(options) {
 		return false;
 	};
 
+	this.addUri = function(uri) {
+
+		console.log('[JUKE] addUri()');
+
+		this.mopidy.library.lookup(uri).then(function(track) {
+			
+			self.addTrack({
+
+				name : track[0].name,
+				artist : track[0].artists[0].name,
+				album : track[0].album.name,
+				uri : track[0].uri,
+				length : track[0].length
+
+			});
+
+
+		});
+		
+	};
+
+
+	this.addAlbum = function(uri) {
+
+		console.log('[JUKE] addAlbum()')
+
+		this.mopidy.library.lookup(uri).then(function(album) {
+
+			// ToDo: Add to playlist in album order
+			for(var x in album) {
+
+				console.log('Adding track #'+x+':')
+				// console.log(album[x]);
+
+				self.addTrack({
+
+					name : album[x].name,
+					artist : album[x].artists[0].name,
+					album : album[x].album.name,
+					uri : album[x].uri,
+					length : album[x].length,
+					votes: 0
+
+				});				
+
+			}
+
+			console.log(this.queue);
+
+		});
+
+
+	};
+
 	this.addTrack = function(track) {
 
 		console.log('[JUKE] addTrack()');
-
-		// track = this.formatTrack(track);
-
+		
 		track.votes = 0;
 
 		if(this.checkDuplicate(track.uri)) {
@@ -195,7 +251,7 @@ function jukebox(options) {
 					self.emit('playback:queue');
 
 				} else {
-
+					
 					console.log('[JUKE] '+ track.uri +' sent to be played');
 
 					self.emit('log', track.name+' sent to player');
@@ -284,8 +340,6 @@ function jukebox(options) {
 		search : function(params, callback) {
 
 			console.log('[JUKE] search()');
-
-			console.log(params);
 
 			self.mopidy.library.search(params).then(
 				function(data) {

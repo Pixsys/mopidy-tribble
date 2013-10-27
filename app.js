@@ -80,6 +80,8 @@ io.sockets.on('connection', function(socket) {
 	socket.on('jukebox:previousTrack', $controller.jukebox.previousTrack.bind($controller.jukebox));
 	socket.on('jukebox:nextTrack', $controller.jukebox.nextTrack.bind($controller.jukebox));
 
+	socket.on('jukebox:addUri', $controller.jukebox.addUri.bind($controller.jukebox));
+
 	socket.on('jukebox:voteUp', $controller.jukebox.vote.up.bind($controller.jukebox));
 	socket.on('jukebox:voteDown', $controller.jukebox.vote.down.bind($controller.jukebox));
 
