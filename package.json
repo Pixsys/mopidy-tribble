@@ -23,7 +23,8 @@
     "mopidy": "~0.1.1",
     "keypress": "~0.2.1",
     "grunt-conventional-changelog": "~1.0.0",
-    "request": "~2.27.0"
+    "request": "~2.27.0",
+    "socket.io": "^0.9.17"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
