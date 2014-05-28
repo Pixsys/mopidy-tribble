@@ -4,6 +4,7 @@
 var Mopidy = require('mopidy');
 var events = require('events');
 var request = require('request');
+var lastfm = require('./../lastfm');
 var musicbrainz = require('.././musicbrainz.js');
 
 /**
@@ -84,19 +85,17 @@ function jukebox(options) {
 
 		// Get album artwork
 
-		musicbrainz.searchForAlbum(pretty_track.artist, pretty_track.album)
-			.then(function(id) {				
-				console.log("sasa",id);			 		
-			 	musicbrainz.addCoverArt(id)
-					.then(function(id2) {
-						console.log("heh" + id2);
-					}).fail(function(err) {
-						console.log("fail");
-					});
-				});
+		lastfm.getAlbumArtwork(pretty_track.artist, pretty_track.album).then(function(data) {
+			
+			// just use the first one
+			pretty_track.artwork = data[0]['#text'];
 
-		
-		request('https://embed.spotify.com/oembed/?url='+pretty_track.uri, function (error, response, body) {
+			self.status.now_playing = pretty_track;
+
+			self.emit('playback:started', pretty_track);
+		})
+
+		// request('https://embed.spotify.com/oembed/?url='+pretty_track.uri, function (error, response, body) {
 
 			// if (!error && response.statusCode == 200 && body.length > 0) {
 			
@@ -109,14 +108,10 @@ function jukebox(options) {
 			
 			// } else {
 
-				pretty_track.artwork = null;
+				// pretty_track.artwork = null;
 
-			// }
-
-			self.status.now_playing = pretty_track;
-
-			self.emit('playback:started', pretty_track);
-		});
+			//
+		// });
 
 	};
 
@@ -244,19 +239,26 @@ function jukebox(options) {
 		} else {
 
 			// Get album artwork
-			request('https://embed.spotify.com/oembed/?url='+track.uri, function (error, response, body) {
+// 			request('https://embed.spotify.com/oembed/?url='+track.uri, function (error, response, body) {
 				
-				// if (!error && response.statusCode == 200) {
+// 				// if (!error && response.statusCode == 200) {
 				
-				// 	var spotify_api_details = JSON.parse(body)
+// 				// 	var spotify_api_details = JSON.parse(body)
 
-				// 	track.artwork = spotify_api_details.thumbnail_url;
+// 				// 	track.artwork = spotify_api_details.thumbnail_url;
 				
-				// } else {
+// 				// } else {
 
-					track.artwork = null;
-// 
-				// }
+// 					track.artwork = null;
+// // 
+// 				// }
+
+			lastfm.getAlbumArtwork(track.artist, track.album).then(function(data) {
+				
+				track.artwork = data[0]['#text'];
+				console.log(data[0]['#text']);
+				console.log(data[1]['#text']);
+				console.log(data[2]['#text']);
 
 
 				if(self.status.now_playing) {

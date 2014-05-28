@@ -12,3 +12,5 @@ app/components
 public/*
 ._.DS_Store
 .DS_Store
+
+config.js
