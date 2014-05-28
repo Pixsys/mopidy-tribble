@@ -1,9 +1,10 @@
 /**
  * Controller dependancies
  */
-var Mopidy = require('mopidy').Mopidy;
+var Mopidy = require('mopidy');
 var events = require('events');
 var request = require('request');
+var musicbrainz = require('.././musicbrainz.js');
 
 /**
  * Exports the module.
@@ -21,8 +22,8 @@ function jukebox(options) {
 	events.EventEmitter.call(this);
 
 	this.mopidy = new Mopidy({
-		// webSocketUrl: "ws://192.168.0.17:6680/mopidy/ws/"
-		webSocketUrl: "ws://localhost:6680/mopidy/ws/"
+		webSocketUrl: "ws://192.168.0.11:6680/mopidy/ws/"
+		// webSocketUrl: "ws://localhost:6680/mopidy/ws/"
 	});
 
 	this.status = {
@@ -79,20 +80,38 @@ function jukebox(options) {
 		
 		};
 
-		// Get album artwork
-		request('https://embed.spotify.com/oembed/?url='+pretty_track.uri, function (error, response, body) {
-			
-			if (!error && response.statusCode == 200) {
-			
-				var spotify_api_details = JSON.parse(body)
+		console.log(pretty_track.uri);
 
-				pretty_track.artwork = spotify_api_details.thumbnail_url;
+		// Get album artwork
+
+		musicbrainz.searchForAlbum(pretty_track.artist, pretty_track.album)
+			.then(function(id) {				
+				console.log("sasa",id);			 		
+			 	musicbrainz.addCoverArt(id)
+					.then(function(id2) {
+						console.log("heh" + id2);
+					}).fail(function(err) {
+						console.log("fail");
+					});
+				});
+
+		
+		request('https://embed.spotify.com/oembed/?url='+pretty_track.uri, function (error, response, body) {
+
+			// if (!error && response.statusCode == 200 && body.length > 0) {
 			
-			} else {
+			// 	var spotify_api_details = JSON.parse(body);
+
+			// 	console.log("artwork", spotify_api_details.thumbnail_url);
+
+			// 	pretty_track.artwork = spotify_api_details.thumbnail_url;
+			
+			
+			// } else {
 
 				pretty_track.artwork = null;
 
-			}
+			// }
 
 			self.status.now_playing = pretty_track;
 
@@ -227,17 +246,17 @@ function jukebox(options) {
 			// Get album artwork
 			request('https://embed.spotify.com/oembed/?url='+track.uri, function (error, response, body) {
 				
-				if (!error && response.statusCode == 200) {
+				// if (!error && response.statusCode == 200) {
 				
-					var spotify_api_details = JSON.parse(body)
+				// 	var spotify_api_details = JSON.parse(body)
 
-					track.artwork = spotify_api_details.thumbnail_url;
+				// 	track.artwork = spotify_api_details.thumbnail_url;
 				
-				} else {
+				// } else {
 
 					track.artwork = null;
-
-				}
+// 
+				// }
 
 
 				if(self.status.now_playing) {
@@ -341,8 +360,10 @@ function jukebox(options) {
 
 			console.log('[JUKE] search()');
 
-			self.mopidy.library.search(params).then(
+			self.mopidy.library.search({'any': ['incubus']}).then(
 				function(data) {
+
+					console.log("Hmm");
 
 					callback(null, data);
 
