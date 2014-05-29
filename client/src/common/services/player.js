@@ -1,4 +1,4 @@
-angular.module('services.player', ['services.comms']);
+	angular.module('services.player', ['services.comms']);
 angular.module('services.player').factory('player', ['$rootScope', '$location', 'comms', function($rootScope, $location, comms){
 
 	// expose public functions
@@ -81,7 +81,8 @@ angular.module('services.player').factory('player', ['$rootScope', '$location', 
 	};
 
 	player.addTrack = function(track) {
-		console.log('ADD TRACK');
+		console.log('ADD TRasdACK');
+		console.log(track);
 		comms.emit('jukebox:addTrack', prettyTrack(track));
 	};
 

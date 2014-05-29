@@ -72,7 +72,8 @@ module.exports = {
       'client/vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
       'client/vendor/placeholders/angular-placeholders-0.0.1-SNAPSHOT.min.js',
       'client/vendor/angular-ui-router/release/angular-ui-router.js',
-      'client/vendor/angular-ui-utils/modules/route/route.js'
+      'client/vendor/angular-ui-utils/modules/route/route.js',
+      'client/vendor/dropzone/downloads/dropzone.min.js',
     ],
     css: [
       'client/vendor/jquery-ui/themes/base/jquery-ui.css',

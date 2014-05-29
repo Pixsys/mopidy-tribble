@@ -89,6 +89,27 @@ angular.module( 'ngBoilerplate.home', [
     }
   });
 
+  var dropzone = document.getElementById('dropzone');
+dropzone.addEventListener('dragover', handleDragOver, false);
+dropzone.addEventListener('drop', handleDrop, false);
+
+console.log(dropzone);
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    return false;
+}
+
+function handleDrop(e) {
+    var droppedURI = e.dataTransfer.getData('Text');
+
+    uri = droppedURI.match(/([^/]+$)/g);
+
+    console.log(droppedURI);
+    console.log(uri);
+    // rest of code here.
+}
+
 })
 
 ;

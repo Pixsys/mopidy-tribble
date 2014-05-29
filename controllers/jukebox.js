@@ -362,7 +362,7 @@ function jukebox(options) {
 
 			console.log('[JUKE] search()');
 
-			self.mopidy.library.search({'any': ['incubus']}).then(
+			self.mopidy.library.search(params).then(
 				function(data) {
 
 					console.log("Hmm");
