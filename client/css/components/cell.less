@@ -1,0 +1,38 @@
+.cell {
+  display: inline-block;
+  background: white;
+  padding: @padding*4;
+  margin-right: @padding*2;
+  margin-bottom: @padding*2;
+  color: white;
+  transition: all .5s;
+}
+
+.cell:hover {
+  background: #39BBA6;
+}
+
+.cell--title {
+  display: block;
+  font-size: 16px;
+  margin-top: @padding;
+  color: #ccc;
+  text-align: center;
+  transition: all .2s;
+}
+
+.cell:hover .cell--title {
+  color: rgba(255,255,255,0.7);
+}
+
+.cell--data {
+  display: block;
+  font-size: 42px;
+  color: #222;
+  text-align: center;
+  transition: all .2s;
+}
+
+.cell:hover .cell--data {
+  color: white;
+}
