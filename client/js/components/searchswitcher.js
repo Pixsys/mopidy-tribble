@@ -31,18 +31,23 @@ var TabSwitcher =
         render: function() {
            
             var results = this.state.searchResults;
-            var tabTitles = [];
+            var tabTitles = []; 
+            
 
             for(i = 0; i < results.length; i++) {
                 var active = (this.props.activeTab == i ? true : false);                
-                tabTitles.push({id: i, uri: results[i].uri, active: active});
+                tabTitles.push({id: i, uri: results[i].uri, active: active, tracks: (results[i].tracks !== undefined ? results[i].tracks.length : 0 )});
             }
             
             tabTitles = tabTitles.map(function(item) {
-                return <a key={item.id} href="javascript:void(0);" className={"search-switcher--tab" + (item.active ? ' active' : '') } onClick={this.onClick.bind(this, item)}>{item.id} - {item.uri}</a>;
+                var label = item.uri.split(":");
+                return <a key={item.id} href="javascript:void(0);" className={"search-switcher--tab" + (item.active ? ' active' : '') } onClick={this.onClick.bind(this, item)}>{label[0] + " (" + item.tracks + ")"}</a>;
             }.bind(this));
             
-            return (<div className="search-switcher">{tabTitles}</div>);
+            return (<div className="search-switcher">
+                        <p>Showing results for <strong>{this.state.searchQuery}</strong></p>
+                        {tabTitles}
+                    </div>);
         }
     });
 

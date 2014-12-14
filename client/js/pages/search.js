@@ -20,7 +20,7 @@ var Search =
 
             return (
                 <div className="search-page">
-                    <h1>Search</h1>                   
+                    <h1>Search</h1>           
                     <SearchSwitcher activeTab={this.state.activeTab} onTabClick={this.handleTabSwitch} />
                     <SearchResults activeTab={this.state.activeTab} />                                       
                 </div>

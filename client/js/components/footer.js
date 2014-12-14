@@ -6,7 +6,7 @@ var Footer =
         render: function() {
             return (
                 <footer>
-                	tribble.
+                	tribble it.
                 </footer>
             );
         }

@@ -40,8 +40,11 @@ var Player =
                             <span onClick={this.onClickPlay} className="player--play">play</span>
                             <span onClick={this.onClickPause} className="player--pause">pause</span>
                             <span onClick={this.onClickNext} className="player--next">next</span>
+                            <span className={"player--playing" + (this.state.isPlaying ? ' enabled' : '')}>Playing...</span>
+                            <span className={"player--paused" + (this.state.isPlaying ? '' : ' enabled')}>Paused</span>
                         </div>
                         <div className="player--details">
+                            
                             <Track name={this.state.currentTrack.name} artist={this.state.currentTrack.artist} artwork={this.state.currentTrack.artwork} />
                         </div>
                     </div>

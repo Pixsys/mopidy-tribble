@@ -118,7 +118,7 @@ function jukebox(options) {
     };
 
     this.play = function(track) {
-        console.log('MOP: ' +track);
+        // console.log('MOP: ' +track);
         if(!this.isPlaying) {
             this.isPlaying = true;
             this.mopidy.playback.play(track).then(null, console.error.bind(console));

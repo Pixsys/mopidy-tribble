@@ -10,7 +10,7 @@
 .search-results {
 	display: inline-block;
 	padding: 20px;
-	border: 1px solid #ccc;	
+	border-top: 1px solid #ccc;	
 }
 
 .search-results--content {
@@ -20,6 +20,7 @@
 .search-results--albums {
 	max-height: 150px;
 	overflow: scroll;
+	margin-bottom: 40px;
 }
 
 .search-switcher {
@@ -29,10 +30,15 @@
 .search-switcher--tab {
 	display: inline-block;
 	padding: 10px;	
+	font-size: 20px;
+	font-weight: 500;
 
 	&.active {
 		background: #f1f1f1;
 	}
+
+	color: #222;
+	text-decoration: none;
 }
 
 .search-results--add-all {
