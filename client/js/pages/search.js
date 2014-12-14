@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 var Player = require('../components/player.js');
+var Queue = require('../components/queue.js');
 var SearchResults = require('../components/searchresults.js');
 var SearchSwitcher = require('../components/searchswitcher.js');
 
@@ -18,10 +19,10 @@ var Search =
             render:function(){
 
             return (
-                <div>
+                <div className="search-page">
                     <h1>Search</h1>                   
                     <SearchSwitcher activeTab={this.state.activeTab} onTabClick={this.handleTabSwitch} />
-                    <SearchResults activeTab={this.state.activeTab} />                   
+                    <SearchResults activeTab={this.state.activeTab} />                                       
                 </div>
             );
         }

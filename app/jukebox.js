@@ -6,6 +6,7 @@ var events = require('events');
 var request = require('request');
 var lastfm = require('./lastfm.js');
 var musicbrainz = require('./musicbrainz.js');
+var _ = require('lodash');
 
 /**
  * Exports the module.
@@ -23,8 +24,8 @@ function jukebox(options) {
     events.EventEmitter.call(this);
 
     this.mopidy = new Mopidy({
-        webSocketUrl: "ws://192.168.1.106:6680/mopidy/ws/"
-        // webSocketUrl: "ws://localhost:6680/mopidy/ws/"
+        // webSocketUrl: "ws://192.168.1.106:6680/mopidy/ws/"
+        webSocketUrl: "ws://localhost:6680/mopidy/ws/"
     });
 
     this.status = {
@@ -32,6 +33,7 @@ function jukebox(options) {
     };
 
     this.queue = [];
+    this.isPlaying = false;
 
     this.online = function(object) {
         console.log('[JUKE] Mopidy Online');
@@ -71,7 +73,10 @@ function jukebox(options) {
             pretty_track.artwork = data[0]['#text'];
             self.status.now_playing = pretty_track;
             self.emit('playback:started', pretty_track);
-        })
+        }).catch(function(err) {
+            self.status.now_playing = pretty_track;
+            self.emit('playback:started', pretty_track);
+        });
 
         // request('https://embed.spotify.com/oembed/?url='+pretty_track.uri, function (error, response, body) {
         // if (!error && response.statusCode == 200 && body.length > 0) {
@@ -85,6 +90,8 @@ function jukebox(options) {
     };
 
     this.playbackEnded = function(track) {
+
+        this.isPlaying = false;
         if (this.queue[0]) {
             var to_be_played = this.queue.shift();
             this.library.playUri(to_be_played.uri);
@@ -92,6 +99,7 @@ function jukebox(options) {
         } else {
             this.status.now_playing = null;
             this.emit('playback:stopped');
+            this.isPlaying = false;
         }
     };
 
@@ -104,12 +112,17 @@ function jukebox(options) {
     };
 
     this.pause = function() {
+        this.isPlaying = false;
         this.mopidy.playback.pause().then(null, console.error.bind(console));
         this.emit('playback:paused');
     };
 
     this.play = function(track) {
-        this.mopidy.playback.play(track).then(null, console.error.bind(console));
+        console.log('MOP: ' +track);
+        if(!this.isPlaying) {
+            this.isPlaying = true;
+            this.mopidy.playback.play(track).then(null, console.error.bind(console));
+        }
     };
 
     this.checkDuplicate = function(uri) {
@@ -121,14 +134,34 @@ function jukebox(options) {
         return false;
     };
 
+    this.addUris = function(array) {
+        console.log('[JUKE] addUris');
+        
+        if (!self.status.now_playing) {                        
+            self.addUri(array[0]);
+            array.shift();
+            setTimeout(function() {
+                _(array).forEach(function(uri) {
+                    console.log('finding ' + uri);
+                    self.addUri(uri);
+                });
+            }, 4000);
+        } else {
+            _(array).forEach(function(uri) {
+                console.log('finding ' + uri);
+                self.addUri(uri);
+            });
+        }
+    }
+
     this.addUri = function(uri) {
         console.log('[JUKE] addUri()');
         this.mopidy.library.lookup(uri).then(function(track) {
-            console.log(track);
+            // console.log(track);
             self.addTrack({
                 name: track[0].name,
                 artist: track[0].artists[0].name,
-                album: (track[0].album !== undefined ? track[0].album.name : ''),
+                album: (track[0].album !== undefined ? track[0].album.name : undefined),
                 uri: track[0].uri,
                 length: track[0].length
             });
@@ -156,6 +189,8 @@ function jukebox(options) {
         });
     };
 
+
+
     this.addTrack = function(track) {
         console.log('[JUKE] addTrack()');
         track.votes = 0;
@@ -170,27 +205,37 @@ function jukebox(options) {
             // 				// } else {
             // 					track.artwork = null;            
             // 			}
+            // console.log(track);
+            if(track.artist !== undefined && track.album !== undefined) {
+                console.log('ARTWORK')
+                lastfm.getAlbumArtwork(track.artist, track.album).then(function(data) {
+                    track.artwork = data[0]['#text'];
 
-            lastfm.getAlbumArtwork(track.artist, track.album).then(function(data) {
-                track.artwork = data[0]['#text'];
-                console.log(data[0]['#text']);
-                console.log(data[1]['#text']);
-                console.log(data[2]['#text']);
-
-                if (self.status.now_playing) {
-                    console.log('[JUKE] ' + track.uri + ' added to the queue');
-                    self.emit('log', track.name + ' added to queue');
-                    self.queue.push(track);
-                    self.emit('playback:queue');
-                } else {
-                    console.log('[JUKE] ' + track.uri + ' sent to be played');
-                    self.emit('log', track.name + ' sent to player');
-                    self.library.playUri(track.uri);
-                    self.emit('playback:queue');
-                };
-            });
+                    self.pushToQueue(track);                    
+                }).catch(function(data) {
+                    console.log('Pushing anyway');
+                    self.pushToQueue(track);
+                });
+            } else {
+                self.pushToQueue(track);
+            }
         }
     };
+
+    this.pushToQueue = function(track) {
+        console.log('[JUKE] push to queue');
+        if (self.status.now_playing) {                        
+            self.queue.push(track);
+            console.log('[JUKE] ' + track.uri + ' added to the queue');
+            self.emit('log', track.name + ' added to queue');
+            self.emit('playback:queue');
+        } else {
+            console.log('[JUKE] ' + track.uri + ' sent to be played');
+            self.emit('log', track.name + ' sent to player');
+            self.library.playUri(track.uri);
+            self.emit('playback:queue');
+        };                             
+    }
 
     this.sortQueue = function() {
         this.queue.sort(function(a, b) {
@@ -214,6 +259,7 @@ function jukebox(options) {
         down: function(uri) {
             console.log('[JUKE] Vote track ' + uri + ' down.');
             for (var x in this.queue) {
+                console.log(this.queue[x].uri);
                 if (this.queue[x].uri === uri) {
                     console.log('[JUKE] Found track at ' + x);
                     this.queue[x].votes--;

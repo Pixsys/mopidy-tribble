@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 var Player = require('../components/player.js');
+var Queue = require('../components/queue.js');
 
 var Dashboard =
     React.createClass({
@@ -8,9 +9,10 @@ var Dashboard =
 
             return (
                 <div>
-                    <h1>Dashboard</h1>
+                    
                    
-                    <Player />
+                    
+                    <Queue />
                    
                 </div>
             );

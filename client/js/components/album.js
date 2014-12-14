@@ -1,10 +1,12 @@
 /** @jsx React.DOM */
 var React = require('react');
+var AppStore = require('../stores/ff-store');
 
 var Album =
     React.createClass({
         handleClick: function() {
             console.log('Aubm', this.props.uri);
+            AppStore.search(AppStore.getSearchQuery() + " " + this.props.name);
         },
         render:function(){
             

@@ -9,8 +9,10 @@ var CHANGE_EVENT = "change";
 
 var _state = {
     currentTrack: {},
-    currentQueue: {},
-    searchResults: {}
+    currentQueue: [],
+    searchResults: {},
+    searchQuery: null,
+    isPlaying: false
 };
 
 function setupSocketEvents() {
@@ -25,7 +27,8 @@ function setupSocketEvents() {
 
     socket.on('playback:started', playbackWasStarted);
     socket.on('playback:stopped', playbackWasStopped);
-    // socket.on('playback:queue', playbackQueueWasUpdated);    
+    socket.on('playback:paused', playbackWasPaused);
+    socket.on('playback:queue', playbackQueueWasUpdated);    
 
 }
 
@@ -35,7 +38,11 @@ function playbackWasStarted(data) {
 }
 
 function playbackWasStopped() {
-    console.log('STOP');
+    AppActions.playbackWasStopped();
+}
+
+function playbackWasPaused() {
+    AppActions.playbackWasPaused();
 }
 
 function playbackQueueWasUpdated(data) {
@@ -70,12 +77,15 @@ var ffStore = {
     },
 
     search: function(query) {
+        _state.searchQuery = query;
         var searchObject = {'any': [query]};
         socket.emit('jukebox:library:search', searchObject, function(searchResults) {
             AppActions.receivedSearchResults(searchResults);
         });        
     },
-
+    getSearchQuery: function() {
+        return _state.searchQuery;
+    },
     play: function(uri) {
         if(uri) {
             socket.emit('jukebox:playTrack', uri);
@@ -84,10 +94,44 @@ var ffStore = {
         }
     },
 
+    next: function() {
+        socket.emit('jukebox:nextTrack');
+    },
+
+    pause: function() {
+        socket.emit('jukebox:pause');
+    },
+
+    voteUp: function(uri) {
+        socket.emit('jukebox:voteUp', uri);
+    },
+
+    voteDown: function(uri) {
+        socket.emit('jukebox:voteDown', uri);        
+    },
+
     addUri: function(uri) {
+        console.log('App store uri' + uri);
         if(uri) {
             socket.emit('jukebox:addUri', uri);
         }
+    },
+
+    addUris: function(array) {
+        socket.emit('jukebox:addUris', array);
+    },
+
+    isInQueue: function(uri) {
+        for(i = 0; i < _state.currentQueue.length; i++) {
+            if(_state.currentQueue[i].uri === uri) return i;
+        }
+        return false;
+    },
+
+    isPlaying: function(uri) {
+        if(_state.currentTrack == null) return false;
+        if(_state.currentTrack.uri === uri) return true;
+        return false;
     },
 
     dispatcherIndex: AppDispatcher.register(function(payload) {
@@ -106,7 +150,12 @@ var ffStore = {
             case ffConstants.RX_SEARCH_RESULTS:
                 setSearchResults(action.data);
                 break;
-
+            case ffConstants.RX_PLAYBACK_PAUSED:
+                setPlaybackPaused();
+                break;
+            case ffConstants.RX_PLAYBACK_STOPPED:
+                setPlaybackStopped();
+                break;
         }
 
         ffStore.emitChange();
@@ -115,11 +164,12 @@ var ffStore = {
 };
 
 function setCurrentQueue(data) {
+    console.log('QUEUE', data);
     _state.currentQueue = data;
 }
 
 function setCurrentTrack(data) {
-    console.log('SET CURRENT', data);
+    _state.isPlaying = true;
     _state.currentTrack = data;
 }
 
@@ -127,6 +177,12 @@ function setSearchResults(data) {
     _state.searchResults = data;
 }
 
+function setPlaybackStopped() {
+    _state.isPlaying = false;
+}
+function setPlaybackPaused() {
+    _state.isPlaying = false;
+}
 function updateDaterangeFrom(date) {
 
     _state.daterange.from = new Date(date);

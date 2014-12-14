@@ -49,6 +49,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('jukebox:previousTrack', jukebox.previousTrack.bind(jukebox));
 	socket.on('jukebox:nextTrack', jukebox.nextTrack.bind(jukebox));
 	socket.on('jukebox:addUri', jukebox.addUri.bind(jukebox));
+	socket.on('jukebox:addUris', jukebox.addUris.bind(jukebox));
 	socket.on('jukebox:voteUp', jukebox.vote.up.bind(jukebox));
 	socket.on('jukebox:voteDown', jukebox.vote.down.bind(jukebox));
 	socket.on('jukebox:library:search', function (request, response) {				

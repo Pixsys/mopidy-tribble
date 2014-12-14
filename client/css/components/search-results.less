@@ -1,5 +1,12 @@
 // search-results.less
 
+
+.search-page {
+	background: white;
+	padding: @padding*2;
+
+}
+
 .search-results {
 	display: inline-block;
 	padding: 20px;
@@ -25,5 +32,13 @@
 
 	&.active {
 		background: #f1f1f1;
+	}
+}
+
+.search-results--add-all {
+	display: none;
+
+	&.enabled {
+		display: inline-block;
 	}
 }

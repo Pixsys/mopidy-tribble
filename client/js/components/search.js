@@ -38,9 +38,9 @@ var Player =
         render: function() {
            
             return (
-                <div>
+                <div className="search-field">
                     <form onSubmit={this.onSearchSubmit} >
-                        <input type="text" ref="query" />
+                        <input type="text" defaultValue={this.state.searchQuery} ref="query" />
                     </form>                
                 </div>);
         }

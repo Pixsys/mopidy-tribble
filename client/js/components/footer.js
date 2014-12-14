@@ -6,7 +6,7 @@ var Footer =
         render: function() {
             return (
                 <footer>
-                Copyright &copy; Form Frog.
+                	tribble.
                 </footer>
             );
         }

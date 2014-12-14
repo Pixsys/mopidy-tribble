@@ -33,9 +33,6 @@ var Template =
             return (
                 <div>
                     <Header />
-                                 
-                    <Search />
-                  
 
                     <div className="content">
                         <RouteHandler />
