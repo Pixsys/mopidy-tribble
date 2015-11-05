@@ -92,32 +92,32 @@ jukebox.on('playback:queue', function() {
 /**
  * KeyPress (temporary library)
  */
-keypress(process.stdin);
-process.stdin.setRawMode(true);
-process.stdin.resume();
+// keypress(process.stdin);
+// process.stdin.setRawMode(true);
+// process.stdin.resume();
 
-process.stdin.on('keypress', function (ch, key) {
-	// console.log('got "keypress"', key);
-	if (key && key.ctrl && key.name == 'c') {
-		jukebox.disconnect();
-		process.exit();
-	} else {
-		// console.log(key);
-		switch(key.name) {
-			case 'up':
-				jukebox.play();
-				break;
-			case 'down':
-				jukebox.pause();
-				break;
-			case 'left':
-				jukebox.previousTrack();
-				break;
-			case 'right':
-				jukebox.nextTrack();
-				break;
+// process.stdin.on('keypress', function (ch, key) {
+// 	// console.log('got "keypress"', key);
+// 	if (key && key.ctrl && key.name == 'c') {
+// 		jukebox.disconnect();
+// 		process.exit();
+// 	} else {
+// 		// console.log(key);
+// 		switch(key.name) {
+// 			case 'up':
+// 				jukebox.play();
+// 				break;
+// 			case 'down':
+// 				jukebox.pause();
+// 				break;
+// 			case 'left':
+// 				jukebox.previousTrack();
+// 				break;
+// 			case 'right':
+// 				jukebox.nextTrack();
+// 				break;
 
-		}
-	}
-	return;
-});
+// 		}
+// 	}
+// 	return;
+// });

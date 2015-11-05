@@ -3,7 +3,7 @@ var ffConstants = require('../constants/ff-constants');
 var merge = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
 var AppActions = require('../actions/ff-actions.js');
-var Api = require('../Api.js');
+var Api = require('../api.js');
 var socket = io();
 var CHANGE_EVENT = "change";
 
