@@ -9,11 +9,7 @@ var Dashboard =
 
             return (
                 <div>
-                    
-                   
-                    
                     <Queue />
-                   
                 </div>
             );
         }

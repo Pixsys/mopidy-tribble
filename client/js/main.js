@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AppStore = require('./stores/ff-store');
+var Store = require('./stores/store');
 
 // router modules
 var Router = require('react-router');

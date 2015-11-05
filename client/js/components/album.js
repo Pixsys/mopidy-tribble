@@ -1,15 +1,14 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AppStore = require('../stores/ff-store');
+var Store = require('../stores/store');
 
 var Album =
     React.createClass({
         handleClick: function() {
             console.log('Aubm', this.props.uri);
-            AppStore.search(AppStore.getSearchQuery() + " " + this.props.name);
+            Store.search(Store.getSearchQuery() + " " + this.props.name);
         },
         render:function(){
-            
             return (
                 <div onClick={this.handleClick} className="album">
                     <span className="album--name">{this.props.name}</span>

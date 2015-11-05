@@ -1,8 +1,8 @@
-var AppDispatcher = require('../dispatchers/ff-dispatcher');
-var ffConstants = require('../constants/ff-constants');
+var AppDispatcher = require('../dispatchers/app-dispatcher');
+var Constants = require('../constants/constants');
 var merge = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
-var AppActions = require('../actions/ff-actions.js');
+var AppActions = require('../actions/actions.js');
 var Api = require('../api.js');
 var socket = io();
 var CHANGE_EVENT = "change";
@@ -16,19 +16,15 @@ var _state = {
 };
 
 function setupSocketEvents() {
-    
+
     socket.on('connection', function() {
         console.log('Connection to server established.');
-    });
-
-    socket.on('connect', function() {
-        console.log('test');
     });
 
     socket.on('playback:started', playbackWasStarted);
     socket.on('playback:stopped', playbackWasStopped);
     socket.on('playback:paused', playbackWasPaused);
-    socket.on('playback:queue', playbackQueueWasUpdated);    
+    socket.on('playback:queue', playbackQueueWasUpdated);
 
 }
 
@@ -81,11 +77,13 @@ var ffStore = {
         var searchObject = {'any': [query]};
         socket.emit('jukebox:library:search', searchObject, function(searchResults) {
             AppActions.receivedSearchResults(searchResults);
-        });        
+        });
     },
+
     getSearchQuery: function() {
         return _state.searchQuery;
     },
+
     play: function(uri) {
         if(uri) {
             socket.emit('jukebox:playTrack', uri);
@@ -107,7 +105,7 @@ var ffStore = {
     },
 
     voteDown: function(uri) {
-        socket.emit('jukebox:voteDown', uri);        
+        socket.emit('jukebox:voteDown', uri);
     },
 
     addUri: function(uri) {
@@ -129,7 +127,7 @@ var ffStore = {
     },
 
     isPlaying: function(uri) {
-        if(_state.currentTrack == null) return false;
+        if(_state.currentTrack === null) return false;
         if(_state.currentTrack.uri === uri) return true;
         return false;
     },
@@ -138,22 +136,20 @@ var ffStore = {
 
         var action = payload.action; // this is our actions from handleViewAction
 
-        // console.log('ACTION: ', action);
-
         switch(action.actionType){
-            case ffConstants.RX_CURRENT_TRACK:
+            case Constants.RX_CURRENT_TRACK:
                 setCurrentTrack(action.data);
                 break;
-            case ffConstants.RX_CURRENT_QUEUE:
+            case Constants.RX_CURRENT_QUEUE:
                 setCurrentQueue(action.data);
                 break;
-            case ffConstants.RX_SEARCH_RESULTS:
+            case Constants.RX_SEARCH_RESULTS:
                 setSearchResults(action.data);
                 break;
-            case ffConstants.RX_PLAYBACK_PAUSED:
+            case Constants.RX_PLAYBACK_PAUSED:
                 setPlaybackPaused();
                 break;
-            case ffConstants.RX_PLAYBACK_STOPPED:
+            case Constants.RX_PLAYBACK_STOPPED:
                 setPlaybackStopped();
                 break;
         }

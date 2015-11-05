@@ -25,7 +25,7 @@ function jukebox(options) {
 
     this.mopidy = new Mopidy({
         // webSocketUrl: "ws://192.168.1.106:6680/mopidy/ws/"
-        webSocketUrl: "ws://localhost:6680/mopidy/ws/"
+        webSocketUrl: "ws://192.168.1.104:6680/mopidy/ws/"
     });
 
     this.status = {

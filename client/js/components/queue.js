@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AppStore = require('../stores/ff-store.js');
+var Store = require('../stores/store.js');
 var Track = require('../components/track.js');
 var Album = require('../components/album.js');
 
@@ -9,20 +9,20 @@ var Link = require('react-router').Link;
 
 var Queue =
     React.createClass({
-    	getInitialState: function() {    		
-    		return AppStore.getState();
+    	getInitialState: function() {
+    		return Store.getState();
     	},
          componentWillUnmount: function() {
-            AppStore.removeChangeListener(this._onChange);
+          Store.removeChangeListener(this._onChange);
         },
 
         componentWillMount:function(){
-            AppStore.addChangeListener(this._onChange);
+          Store.addChangeListener(this._onChange);
         },
 
         _onChange:function(){
-            this.setState(AppStore.getState());
-        },      
+          this.setState(Store.getState());
+        },
 
         albumWasClicked: function(item) {
             console.log('Album click');
@@ -36,16 +36,16 @@ var Queue =
             var queue = this.state.currentQueue;
 
             var tracks = queue.map(function(item) {
-                return <Track key={item.uri} 
-                              uri={item.uri} 
-                              name={item.name} 
-                              artist={item.artist} 
-                              album={item.album.name} 
+                return <Track key={item.uri}
+                              uri={item.uri}
+                              name={item.name}
+                              artist={item.artist}
+                              album={item.album.name}
                               artwork={item.artwork}
                               vote={true}
                               votes={item.votes} />;
             });
-            
+
             return (
                 <div className="queue"><h2>Play Queue</h2>
                     {tracks}

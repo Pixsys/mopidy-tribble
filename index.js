@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -9,39 +5,25 @@ var keypress = require('keypress');
 var io = require('socket.io');
 var jukebox = require('./app/jukebox.js');
 
-/**
- * Init App
- */
 var app = express();
-
-/**
- * App settings
- */
 app.set('port', process.env.PORT || 3000);
-
 app.use(express.static(path.join(__dirname, 'dist')));
-
-/**
- * HTTP server
- */
 var server = http.createServer(app).listen(app.get('port'), function(){
-	console.log('Express server listening on port ' + app.get('port'));
+	console.log('Tribble server listening on port ' + app.get('port'));
 });
 
 /**
  * SocketIO for Web Interface (jukebox relay)
  */
 io = io.listen(server);
-
 io.set('log level', 0);
-
 io.sockets.on('connection', function(socket) {
 	console.log('[SOCKET] New Connection from '+socket.id);
-	
-	// Send current status
+	// send current status on connection
 	socket.emit('playback:started', jukebox.status.now_playing);
 	socket.emit('playback:queue', jukebox.queue);
 
+	// listen for events
 	socket.on('jukebox:play', jukebox.play.bind(jukebox));
 	socket.on('jukebox:playTrack', jukebox.library.playUri.bind(jukebox));
 	socket.on('jukebox:addTrack', jukebox.addTrack.bind(jukebox));
@@ -52,13 +34,13 @@ io.sockets.on('connection', function(socket) {
 	socket.on('jukebox:addUris', jukebox.addUris.bind(jukebox));
 	socket.on('jukebox:voteUp', jukebox.vote.up.bind(jukebox));
 	socket.on('jukebox:voteDown', jukebox.vote.down.bind(jukebox));
-	socket.on('jukebox:library:search', function (request, response) {				
-		jukebox.library.search(request, function(err, results) {			
+	socket.on('jukebox:library:search', function (request, response) {
+		jukebox.library.search(request, function(err, results) {
 			if (!err) {
-				response(null, results);				
+				response(null, results);
 			} else {
 				response(err);
-			}		
+			}
 		});
 	});
 });
@@ -71,10 +53,7 @@ jukebox.on('log', function(message) {
 });
 
 jukebox.on('playback:started', function(track) {
-
-	console.log('SOMETHING HAERE');
 	io.sockets.emit('playback:started', track);
-
 })
 
 jukebox.on('playback:paused', function() {

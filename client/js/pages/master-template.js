@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AppStore = require('../stores/ff-store.js');
+var Store = require('../stores/store.js');
 var RouteHandler = require('react-router').RouteHandler;
 
 var Header = require('./../components/header.js');
@@ -12,22 +12,26 @@ var Footer = require('./../components/footer.js');
 var Template =
     React.createClass({
         getInitialState: function() {
-            return AppStore.getState();
+            return Store.getState();
         },
+
         componentDidMount: function() {
             console.log('MASTER');
-            AppStore.setupSocketEvents();            
+            Store.setupSocketEvents();
         },
+
         componentWillUnmount: function() {
-            AppStore.removeChangeListener(this._onChange);
+            Store.removeChangeListener(this._onChange);
         },
 
         componentWillMount:function(){
-            AppStore.addChangeListener(this._onChange);
+            Store.addChangeListener(this._onChange);
         },
+
         _onChange:function(){
-            this.setState(AppStore.getState());
+            this.setState(Store.getState());
         },
+
         render:function(){
 
             return (

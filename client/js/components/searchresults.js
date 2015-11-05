@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 var React = require('react');
 var _ = require('lodash');
-var AppStore = require('../stores/ff-store.js');
+var Store = require('../stores/store.js');
 var Track = require('../components/track.js');
 var Album = require('../components/album.js');
 
@@ -10,22 +10,22 @@ var Link = require('react-router').Link;
 
 var SearchResults =
     React.createClass({
-    	getInitialState: function() {    		
-    		return AppStore.getState();
+    	getInitialState: function() {
+    		return Store.getState();
     	},
+
          componentWillUnmount: function() {
-            AppStore.removeChangeListener(this._onChange);
+            Store.removeChangeListener(this._onChange);
         },
 
         componentWillMount:function(){
-            
 
-            AppStore.addChangeListener(this._onChange);
+            Store.addChangeListener(this._onChange);
         },
 
         _onChange:function(){
-            this.setState(AppStore.getState());
-        },      
+            this.setState(Store.getState());
+        },
 
         albumWasClicked: function(item) {
             console.log('Album click');
@@ -44,38 +44,38 @@ var SearchResults =
                         uris.push(track.uri);
                     }
                 });
-                AppStore.addUris(uris);
+                Store.addUris(uris);
             }
         },
 
         render: function() {
             if(!this.state.searchResults[this.props.activeTab]) {
-                return (<p>No search results.</p>); 
+                return (<p>No search results.</p>);
             }
-            
+
             var results, albums, tracks, artists;
 
             results = this.state.searchResults[this.props.activeTab];
 
             if(results.tracks !== undefined) {
-                tracks = results.tracks.map(function(item) {                    
+                tracks = results.tracks.map(function(item) {
                     // console.log("ITEMS: " ,  item);
                     var artists = item.artists.map(function(artist) {
                         return artist.name;
                     });
-                    
-                    return <Track key={item.uri} 
-                                  uri={item.uri} 
-                                  name={item.name} artist={artists.join(', ')} 
-                                  album={item.album.name} 
+
+                    return <Track key={item.uri}
+                                  uri={item.uri}
+                                  name={item.name} artist={artists.join(', ')}
+                                  album={item.album.name}
                                   artwork={item.artwork}
-                                  vote={false} 
+                                  vote={false}
                                   controls={true} />;
                 }, this);
             }
-            
+
             if(results.albums !== undefined) {
-                albums = results.albums.map(function(item) {                               
+                albums = results.albums.map(function(item) {
 
                     return <Album key={item.uri} uri={item.uri} name={item.name} artist={item.artist} />;
                 }, this);
@@ -83,7 +83,7 @@ var SearchResults =
 
             return (
                 <div className="search-results">
-                    
+
                     <span className="search-results--title">
                         {albums !== undefined ? albums.length + ' albums, ' : ' 0 albums, '}
                     </span>

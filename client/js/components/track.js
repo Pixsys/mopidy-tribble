@@ -1,30 +1,29 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AppStore = require('../stores/ff-store.js');
+var Store = require('../stores/store.js');
 
 var Track =
     React.createClass({
         handleClick: function(e) {
             e.preventDefault();
-            AppStore.addUri(this.props.uri);            
+            Store.addUri(this.props.uri);
         },
         handleUpVote: function(e) {
             console.log('handle upvote');
-            AppStore.voteUp(this.props.uri);
+            Store.voteUp(this.props.uri);
         },
         handleDownVote: function(e) {
             console.log('handle downvote');
-            AppStore.voteDown(this.props.uri);
+            Store.voteDown(this.props.uri);
         },
-        render:function(){            
+        render:function(){
 
             // is this in the queue?
-            var inQueue = AppStore.isInQueue(this.props.uri);
-            var isPlaying = AppStore.isPlaying(this.props.uri);
+            var inQueue = Store.isInQueue(this.props.uri);
+            var isPlaying = Store.isPlaying(this.props.uri);
 
             return (
-                <div className="track" >
-
+                <div className="track">
                     <div className={"track--controls" + (this.props.controls === true ? ' enabled' : '')}>
                         <span className={"track--add" + (inQueue === false ? ' enabled' : '' )} onClick={this.handleClick}>Add</span>
                         <span className={"track--added" + (inQueue !== false ? ' enabled' : '' )}>Added <span className="track--queue">{inQueue === 0 ? 'Up next' : (inQueue+1) + " in queue"}</span></span>
@@ -40,10 +39,9 @@ var Track =
                     </span>
                     <div className="track--details">
                         <span className="track--name" onClick={this.handleClick}>{this.props.name}</span><br />
-                        <span className="track--artist">{this.props.artist}</span><br /> 
+                        <span className="track--artist">{this.props.artist}</span><br />
                         <span className="track--album">{this.props.album}</span>
                     </div>
-                    
                 </div>
             );
         }

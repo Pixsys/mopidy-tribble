@@ -1,5 +1,5 @@
-var AppConstants = require('../constants/ff-constants.js');
-var AppDispatcher = require('../dispatchers/ff-dispatcher.js');
+var AppConstants = require('../constants/constants.js');
+var AppDispatcher = require('../dispatchers/app-dispatcher.js');
 
 var appActions = {
 
@@ -27,13 +27,13 @@ var appActions = {
     playbackWasStopped: function() {
         AppDispatcher.handleDataAction({
             actionType: AppConstants.RX_PLAYBACK_STOPPED
-        })
+        });
     },
 
     playbackWasPaused: function() {
         AppDispatcher.handleDataAction({
             actionType: AppConstants.RX_PLAYBACK_PAUSED
-        })
+        });
     },
 
     /// OUTGOING REQUESTS
@@ -60,13 +60,13 @@ var appActions = {
 
     pause: function() {
         AppDispatcher.handleDataAction({
-            actionType: AppConstants.TX_JUKEBOX_PAUSE            
+            actionType: AppConstants.TX_JUKEBOX_PAUSE
         });
     },
 
     next: function() {
         AppDispatcher.handleDataAction({
-            actionType: AppConstants.TX_JUKEBOX_NEXT            
+            actionType: AppConstants.TX_JUKEBOX_NEXT
         });
     }
 };

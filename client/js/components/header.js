@@ -5,9 +5,6 @@ var Search = require('../components/search');
 // routing
 var Link = require('react-router').Link;
 
-// components
-var DatePicker = require('../components/datepicker');
-
 var Header =
     React.createClass({
         render: function() {

@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 var React = require('react');
-var AppStore = require('../stores/ff-store.js');
+var Store = require('../stores/store.js');
 var Navigation = require('react-router').Navigation;
 
 // routing
@@ -10,38 +10,37 @@ var Player =
     React.createClass({
         mixins: [Navigation],
 
-    	getInitialState: function() {    		
-    		return AppStore.getState();
+    	getInitialState: function() {
+    		return Store.getState();
     	},
         componentWillUnmount: function() {
-            AppStore.removeChangeListener(this._onChange);
+            Store.removeChangeListener(this._onChange);
         },
 
         componentWillMount:function(){
-            AppStore.addChangeListener(this._onChange);
+            Store.addChangeListener(this._onChange);
         },
 
         _onChange:function(){
-            this.setState(AppStore.getState());
+            this.setState(Store.getState());
         },
 
         onSearchSubmit: function(e) {
             e.preventDefault();
-            
-            var query = this.refs.query.getDOMNode().value.trim();            
+
+            var query = this.refs.query.getDOMNode().value.trim();
             if (!query) return;
 
-            AppStore.search(query);
+            Store.search(query);
             this.transitionTo('search');
         },
 
         render: function() {
-           
             return (
                 <div className="search-field">
                     <form onSubmit={this.onSearchSubmit} >
                         <input type="text" defaultValue={this.state.searchQuery} ref="query" />
-                    </form>                
+                    </form>
                 </div>);
         }
     });
