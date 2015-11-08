@@ -3,8 +3,9 @@ var http = require('http');
 var path = require('path');
 var keypress = require('keypress');
 var io = require('socket.io');
+var async = require('async');
 var jukebox = require('./app/jukebox.js');
-
+var lastfm = require('./app/lastfm.js');
 var app = express();
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -35,15 +36,53 @@ io.sockets.on('connection', function(socket) {
 	socket.on('jukebox:voteUp', jukebox.vote.up.bind(jukebox));
 	socket.on('jukebox:voteDown', jukebox.vote.down.bind(jukebox));
 	socket.on('jukebox:library:search', function (request, response) {
-		jukebox.library.search(request, function(err, results) {
-			if (!err) {
-				response(null, results);
-			} else {
-				response(err);
-			}
+		// console.log(request);
+		jukebox.library.search(request, function(results) {
+			var uris = [];
+			results.forEach(function(service) {
+				if(service.albums) {
+					service.albums.forEach(function(album) {
+						// console.log(album.uri)
+						uris.push(album.uri);
+					});
+				}
+				if(service.tracks) {
+					service.tracks.forEach(function(track) {
+						// console.log(track.album.uri)
+						// uris.push(track.album.uri);
+					});
+				}
+
+				if(uris.length) {
+					// console.log("Get uris", uris);
+					jukebox.library.getImages(uris, function(images) {
+						async.mapSeries(results, function(result, callback) {
+							console.log(result);
+							if(result.albums) {
+								result.albums = result.albums.map(function(album) {
+									console.log(images[album.uri]);
+									album.artwork = images[album.uri];
+									return album;
+								});
+							}
+							if(result.tracks) {
+								result.tracks = result.tracks.map(function(track) {
+									// console.log(images[track.album.uri]);
+									track.album.artwork = images[track.album.uri];
+									return track;
+								});
+							}
+							callback(null, result);
+						}, function(err, results) {
+							response(results, null);
+						});
+					});
+				}
+			});
 		});
 	});
 });
+
 
 /**
  * Jukebox events

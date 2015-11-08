@@ -22,6 +22,9 @@ var Track =
             var inQueue = Store.isInQueue(this.props.uri);
             var isPlaying = Store.isPlaying(this.props.uri);
 
+            
+
+
             return (
                 <div className="track">
                     <div className={"track--controls" + (this.props.controls === true ? ' enabled' : '')}>

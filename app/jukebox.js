@@ -24,8 +24,8 @@ function jukebox(options) {
     events.EventEmitter.call(this);
 
     this.mopidy = new Mopidy({
-        // webSocketUrl: "ws://192.168.1.106:6680/mopidy/ws/"
-        webSocketUrl: "ws://192.168.1.104:6680/mopidy/ws/"
+        webSocketUrl: "ws://192.168.1.105:6680/mopidy/ws/"
+        // webSocketUrl: "ws://192.168.1.75:6680/mopidy/ws/"
     });
 
     this.status = {
@@ -70,7 +70,7 @@ function jukebox(options) {
         // Get album artwork
         lastfm.getAlbumArtwork(pretty_track.artist, pretty_track.album).then(function(data) {
             // just use the first one
-            pretty_track.artwork = data[0]['#text'];
+            pretty_track.artwork = data[3]['#text'];
             self.status.now_playing = pretty_track;
             self.emit('playback:started', pretty_track);
         }).catch(function(err) {
@@ -209,9 +209,8 @@ function jukebox(options) {
             if(track.artist !== undefined && track.album !== undefined) {
                 console.log('ARTWORK')
                 lastfm.getAlbumArtwork(track.artist, track.album).then(function(data) {
-                    track.artwork = data[0]['#text'];
-
-                    self.pushToQueue(track);                    
+                    track.artwork = data[3]['#text'];
+                    self.pushToQueue(track);
                 }).catch(function(data) {
                     console.log('Pushing anyway');
                     self.pushToQueue(track);
@@ -284,9 +283,9 @@ function jukebox(options) {
 		 */
         search: function(params, callback) {
             console.log('[JUKE] search()');
-            self.mopidy.library.search(params).then(
+            self.mopidy.library.search(params, null, false).then(
                 function(data) {
-                    console.log("Hmm");
+                    console.log(data[0].artists);
                     callback(data);
                 },
                 console.error.bind(console)
@@ -301,6 +300,12 @@ function jukebox(options) {
                 self.play();
             });
 
+        },
+
+        getImages: function(uris, callback) {
+            self.mopidy.library.getImages(uris).then(function(result) {
+                callback(result);
+            });
         }
     }
 

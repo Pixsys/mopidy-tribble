@@ -30,6 +30,10 @@ function setupSocketEvents() {
 
 function playbackWasStarted(data) {
     console.log('PLAY: ', data);
+
+    if(data !== null && data.artwork) {
+        console.log("IMAGE: ", data.artwork);
+    }
     AppActions.receivedCurrentTrack(data);
 }
 

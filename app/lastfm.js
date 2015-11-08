@@ -33,7 +33,7 @@ var LastFM = {
 
 	getAlbumArtwork: function(artist, album) {
 		var defer = q.defer();
-		
+
 		lastfm.request("album.getInfo", {
 			artist: artist,
 			album: album,

@@ -25,6 +25,8 @@ var SearchResults =
 
         _onChange:function(){
             this.setState(Store.getState());
+            console.log("Search change");
+            console.log(Store.getState());
         },
 
         albumWasClicked: function(item) {
@@ -64,28 +66,39 @@ var SearchResults =
                         return artist.name;
                     });
 
+                    var artwork;
+                    if(item.album.artwork) {
+                        if(item.album.artwork[1]) {
+                            artwork = item.album.artwork[1].uri;
+                        } else if(item.album.artwork[2]) {
+                            artwork = item.album.artwork[2].uri;
+                        } else if(item.album.artwork[0]) {
+                            artwork = item.album.artwork[0].uri;
+                        }
+                    }
+
                     return <Track key={item.uri}
                                   uri={item.uri}
                                   name={item.name} artist={artists.join(', ')}
                                   album={item.album.name}
-                                  artwork={item.artwork}
+                                  artwork={artwork}
                                   vote={false}
                                   controls={true} />;
                 }, this);
             }
 
-            if(results.albums !== undefined) {
-                albums = results.albums.map(function(item) {
+            // if(results.albums !== undefined) {
+            //     albums = results.albums.map(function(item) {
 
-                    return <Album key={item.uri} uri={item.uri} name={item.name} artist={item.artist} />;
-                }, this);
-            }
+            //         return <Album key={item.uri} uri={item.uri} name={item.name} artist={item.artist} artwork={item.artwork} />;
+            //     }, this);
+            // }
 
             return (
                 <div className="search-results">
 
                     <span className="search-results--title">
-                        {albums !== undefined ? albums.length + ' albums, ' : ' 0 albums, '}
+                        {/*albums !== undefined ? albums.length + ' albums, ' : ' 0 albums, '*/}
                     </span>
 
                     <span className={"search-results--add-all button" + (tracks !== undefined ? (tracks.length < 18 ? ' enabled' : ''):'')} onClick={this.addAllResults}>
