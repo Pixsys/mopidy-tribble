@@ -47,7 +47,7 @@ var Queue =
             });
 
             return (
-                <div className="queue"><h2>Play Queue</h2>
+                <div className="queue"><h3 className="heading">Play Queue</h3>
                     {tracks}
                 </div>);
         }

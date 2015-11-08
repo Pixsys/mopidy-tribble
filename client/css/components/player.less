@@ -8,17 +8,31 @@
 	height: 40px;
 	overflow: hidden;
 	margin: 5px;
-	background: #f1f1f1;
-	cursor: pointer;
+	background-repeat: no-repeat;
+	background-size: 40px 40px;
 
 	&:hover {
-		background: #ccc;
+		background-color: #f1f1f1;	
+		cursor:pointer;
 	}
+}
+
+.player--play {
+	background-image: url('../img/icon-play.png');
+}
+
+.player--pause {
+	background-image: url('../img/icon-pause.png');
+}
+
+.player--next {
+	background-image: url('../img/icon-next.png');
 }
 
 .player--controls {
 	float: left;
 	width: 150px;
+	margin-right: @padding*2;
 }
 
 .player--details {

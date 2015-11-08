@@ -37,9 +37,9 @@ var Player =
                 return (
                     <div>
                         <div className="player--controls">
-                            <span onClick={this.onClickPlay} className="player--play">play</span>
-                            <span onClick={this.onClickPause} className="player--pause">pause</span>
-                            <span onClick={this.onClickNext} className="player--next">next</span>
+                            <a onClick={this.onClickPlay} className="player--play"></a>
+                            <a onClick={this.onClickPause} className="player--pause"></a>
+                            <a onClick={this.onClickNext} className="player--next"></a>
                             <span className={"player--playing" + (this.state.isPlaying ? ' enabled' : '')}>Playing...</span>
                             <span className={"player--paused" + (this.state.isPlaying ? '' : ' enabled')}>Paused</span>
                         </div>

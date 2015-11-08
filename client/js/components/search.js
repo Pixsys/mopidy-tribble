@@ -39,7 +39,7 @@ var Player =
             return (
                 <div className="search-field">
                     <form onSubmit={this.onSearchSubmit} >
-                        <input type="text" defaultValue={this.state.searchQuery} ref="query" />
+                        <input type="text" placeholder="search" defaultValue={this.state.searchQuery} ref="query" />
                     </form>
                 </div>);
         }

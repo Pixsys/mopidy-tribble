@@ -13,8 +13,8 @@ var Header =
                 	<Player />
                 	<Search />
                     <nav className="primary">
-                        <Link to="/">Play Queue</Link>
-                        <Link to="search">Search Results</Link>
+                        <Link to="/">Queue</Link>
+                        <Link to="search">Search</Link>
                     </nav>
                 </header>
             );
