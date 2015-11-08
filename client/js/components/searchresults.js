@@ -101,10 +101,6 @@ var SearchResults =
                         {/*albums !== undefined ? albums.length + ' albums, ' : ' 0 albums, '*/}
                     </span>
 
-                    <span className={"search-results--add-all button" + (tracks !== undefined ? (tracks.length < 18 ? ' enabled' : ''):'')} onClick={this.addAllResults}>
-                        Add All
-                    </span>
-
                     <div className="search-results--content">
                         <div className="search-results--albums">
 
@@ -112,7 +108,7 @@ var SearchResults =
                         </div>
 
                         <div className="search-results--tracks">
-                            {tracks !== undefined ? tracks.length + ' tracks' : ' 0 tracks '}
+                            {/*tracks !== undefined ? tracks.length + ' tracks' : ' 0 tracks '*/}
 
                             {tracks}
                         </div>
