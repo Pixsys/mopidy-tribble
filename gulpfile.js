@@ -27,6 +27,9 @@ gulp.task('copy', function() {
     gulp.src('client/css/main.css')
         .pipe(gulp.dest('dist/css'));
 
+    gulp.src('client/img/*')
+        .pipe(gulp.dest('dist/img'));
+
     gulp.src(['node_modules/jquery/dist/jquery.min.js',
               './node_modules/pickadate/lib/compressed/picker.js',
               './node_modules/pickadate/lib/compressed/picker.date.js'])
